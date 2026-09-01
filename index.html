@@ -61,6 +61,13 @@
     filter: blur(2px);
     opacity: 0.55;
   }
+  .skyline-far::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--void) 0%, transparent 45%);
+    z-index: 2;
+  }
   .skyline{
     position: fixed;
     left: 0; right: 0; bottom: 0;
@@ -390,48 +397,20 @@
      glow inside a thin bordered box, in its own color, flickering
      on its own irregular schedule */
   .shelf-label{
-    display: inline-block;
-    font-family: 'Big Shoulders Text', sans-serif;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-size: clamp(1.3rem, 3vw, 1.65rem);
-    margin: 0 0 20px;
-    padding: 8px 20px 10px;
-    color: #fff8fb;
-    background: rgba(5,5,6,0.35);
-    border: 1.5px solid var(--neon, var(--cyan));
-    border-radius: 6px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0 0 18px;
+    color: #dfe2df;
     text-shadow:
-      0 0 4px rgba(255,255,255,0.85),
-      0 0 10px var(--neon, var(--cyan)),
-      0 0 20px var(--neon, var(--cyan)),
-      0 0 40px var(--neon, var(--cyan));
-    box-shadow:
-      0 0 10px var(--neon, var(--cyan)),
-      inset 0 0 10px rgba(255,255,255,0.06);
-    animation: shelfneon 4.6s linear infinite;
-    animation-delay: var(--neon-delay, 0s);
+      0 0 3px rgba(223,226,223,0.8),
+      0 0 8px rgba(190,196,192,0.55),
+      0 0 16px rgba(160,168,164,0.35);
     opacity: 0;
     transform: translateY(10px);
     transition: opacity .7s ease, transform .7s ease;
   }
   .shelf-section.in-view .shelf-label{ opacity: 1; transform: translateY(0); }
-  @keyframes shelfneon{
-    0%, 4%, 8%, 46%, 50%, 78%, 82%, 100%{
-      text-shadow:
-        0 0 4px rgba(255,255,255,0.85),
-        0 0 10px var(--neon, var(--cyan)),
-        0 0 20px var(--neon, var(--cyan)),
-        0 0 40px var(--neon, var(--cyan));
-      box-shadow: 0 0 10px var(--neon, var(--cyan)), inset 0 0 10px rgba(255,255,255,0.06);
-    }
-    5%, 6%, 47%, 48%, 79%, 80%{
-      text-shadow: 0 0 2px rgba(255,255,255,0.35), 0 0 5px var(--neon, var(--cyan));
-      box-shadow: 0 0 3px var(--neon, var(--cyan));
-    }
-  }
-  @media (prefers-reduced-motion: reduce){ .shelf-label{ animation: none; } }
 
   .shelf-wrap{ position: relative; padding-bottom: 32px; }
   .shelf-platform{
@@ -917,9 +896,8 @@ const bookTitle = document.getElementById('bookTitle');
 const bookBody = document.getElementById('bookBody');
 
 const chipRefs = [];
-const neonColors = ['var(--cyan)', 'var(--sick-green)', 'var(--neon-magenta)', 'var(--accent)'];
 
-function makeBookFloat(book, section, bi, neon){
+function makeBookFloat(book, section, bi){
   const float = document.createElement('div');
   float.className = 'book-float';
   float.style.setProperty('--delay', (bi * 0.5) + 's');
@@ -959,7 +937,6 @@ function makeBookFloat(book, section, bi, neon){
 
 library.forEach((section, si) => {
   const sectionId = 'shelf-' + si;
-  const shelfNeon = neonColors[si % neonColors.length];
 
   const chip = document.createElement('button');
   chip.className = 'chip lower';
@@ -977,8 +954,6 @@ library.forEach((section, si) => {
   const label = document.createElement('p');
   label.className = 'shelf-label lower';
   label.textContent = section.shelf;
-  label.style.setProperty('--neon', shelfNeon);
-  label.style.setProperty('--neon-delay', (si * 1.4) + 's');
   wrap.appendChild(label);
 
   const shelfWrap = document.createElement('div');
@@ -999,7 +974,7 @@ library.forEach((section, si) => {
   // render the row twice back-to-back so a 50%-width translateX loops seamlessly
   for (let copy = 0; copy < 2; copy++){
     section.books.forEach((book, bi) => {
-      track.appendChild(makeBookFloat(book, section, bi, shelfNeon));
+      track.appendChild(makeBookFloat(book, section, bi));
     });
   }
 
@@ -1077,13 +1052,16 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBook();
   const skyline = document.getElementById('skyline');
   const skylineFar = document.getElementById('skylineFar');
   const w = window.innerWidth;
+  const vh = window.innerHeight;
+  const farMaxH = vh * 0.58;   // stays safely under the 64vh far container
+  const nearMaxH = vh * 0.50;  // stays safely under the 56vh near container
 
   // far, hazier layer — taller, sparser, no windows, just silhouette
   let fx = -40;
   const farCount = Math.max(6, Math.ceil(w / 220));
   for (let i = 0; i < farCount; i++){
     const bw = 140 + Math.random() * 220;
-    const bh = 240 + Math.random() * 340;
+    const bh = Math.min(240 + Math.random() * 340, farMaxH);
     const b = document.createElement('div');
     b.className = 'building far';
     b.style.left = fx + 'px';
@@ -1099,7 +1077,9 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBook();
   for (let i = 0; i < count; i++){
     const isLandmark = i === landmarkIndex;
     const bw = isLandmark ? 92 : 60 + Math.random() * 70;
-    const bh = isLandmark ? 440 + Math.random() * 70 : 140 + Math.random() * 300;
+    const bh = isLandmark
+      ? Math.min(440 + Math.random() * 70, nearMaxH)
+      : Math.min(140 + Math.random() * 300, nearMaxH);
     const b = document.createElement('div');
     b.className = 'building';
     b.style.left = x + 'px';
