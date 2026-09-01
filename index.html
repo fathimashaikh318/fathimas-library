@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>reading room</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&family=Big+Shoulders+Text:wght@400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
     --void: #0b0c0a;
@@ -54,7 +54,7 @@
   .skyline-far{
     position: fixed;
     left: 0; right: 0; bottom: 0;
-    height: 44vh;
+    height: 56vh;
     z-index: -1;
     pointer-events: none;
     overflow: hidden;
@@ -64,7 +64,7 @@
   .skyline{
     position: fixed;
     left: 0; right: 0; bottom: 0;
-    height: 40vh;
+    height: 50vh;
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
@@ -84,6 +84,12 @@
   .building.far{
     background: linear-gradient(180deg, #1c1e18 0%, #101208 100%);
   }
+  .spike{
+    position: absolute;
+    bottom: 100%;
+    width: 2px;
+    background: var(--concrete);
+  }
   .window{
     position: absolute;
     width: 4px; height: 7px;
@@ -102,25 +108,111 @@
   }
   @media (prefers-reduced-motion: reduce){ .window.flicker{ animation: none; opacity: 0.4; } }
 
-  /* neon signage, hung on a handful of buildings */
-  .sign{
+  /* ---------- street ---------- */
+  .street{
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    height: 8vh;
+    min-height: 52px;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    background: linear-gradient(180deg, #1c1d1f 0%, #0d0e0f 100%);
+  }
+  .street::before{
+    /* sidewalk */
+    content: "";
     position: absolute;
-    border-radius: 1px;
-    filter: blur(0.2px);
-    animation: neonflicker 6s ease-in-out infinite;
+    top: 0; left: 0; right: 0;
+    height: 7px;
+    background: linear-gradient(180deg, #4d4f52, #34363a);
   }
-  .sign.magenta{ background: var(--neon-magenta); box-shadow: 0 0 10px 2px rgba(255,46,126,0.7), 0 0 24px 4px rgba(255,46,126,0.3); }
-  .sign.red{ background: var(--neon-red); box-shadow: 0 0 10px 2px rgba(209,51,46,0.7), 0 0 24px 4px rgba(209,51,46,0.3); }
-  .sign.green{ background: var(--sick-green); box-shadow: 0 0 10px 2px rgba(143,174,58,0.7), 0 0 24px 4px rgba(143,174,58,0.3); }
-  @keyframes neonflicker{
-    0%, 88% { opacity: 1; }
-    90% { opacity: 0.2; }
-    92% { opacity: 1; }
-    94% { opacity: 0.3; }
-    96% { opacity: 1; }
-    100% { opacity: 1; }
+  .street::after{
+    /* dashed center line */
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 54%;
+    height: 3px;
+    transform: translateY(-50%);
+    background-image: repeating-linear-gradient(90deg,
+      rgba(230,210,140,0.55) 0px, rgba(230,210,140,0.55) 26px,
+      transparent 26px, transparent 52px);
   }
-  @media (prefers-reduced-motion: reduce){ .sign{ animation: none; } }
+
+  /* ---------- streetlamps ---------- */
+  .lamps{ position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+  .lamp{
+    position: absolute;
+    width: 3px;
+    background: linear-gradient(180deg, #4a4c4f, #202224);
+  }
+  .lamp .bulb{
+    position: absolute;
+    top: -6px; left: 50%;
+    transform: translateX(-50%);
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #ffd98a;
+    box-shadow: 0 0 12px 4px rgba(255,217,138,0.5), 0 0 30px 10px rgba(255,217,138,0.22);
+  }
+  .lamp.flicker .bulb{ animation: flicker 6s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce){ .lamp.flicker .bulb{ animation: none; } }
+
+  /* ---------- cars ---------- */
+  .cars{ position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+  .car{
+    position: absolute;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+  }
+  .car svg{ display: block; width: 100%; height: 100%; }
+  @keyframes drive-right{ from{ transform: translateX(-12vw); } to{ transform: translateX(112vw); } }
+  @keyframes drive-left{ from{ transform: translateX(112vw); } to{ transform: translateX(-12vw); } }
+  @media (prefers-reduced-motion: reduce){ .car{ animation: none; display: none; } }
+
+  /* ---------- fire, taller than the skyline ---------- */
+  .fire-wrap{
+    position: fixed;
+    left: 60%;
+    bottom: 0;
+    width: 340px;
+    height: 82vh;
+    z-index: -1;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .fire-ambient{
+    position: absolute;
+    left: 50%; bottom: 0;
+    width: 460px; height: 420px;
+    margin-left: -230px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,150,60,0.5) 0%, rgba(255,90,30,0.24) 42%, transparent 72%);
+    filter: blur(34px);
+    animation: fireambient 6s ease-in-out infinite;
+    mix-blend-mode: screen;
+  }
+  @keyframes fireambient{ 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.04); opacity: 1; } }
+
+  .flame{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    clip-path: polygon(50% 0%, 78% 18%, 64% 42%, 88% 58%, 62% 100%, 38% 100%, 12% 58%, 36% 42%, 22% 18%);
+    transform-origin: 50% 100%;
+    filter: blur(1.5px);
+  }
+  .flame.f1{ width: 210px; height: 62vh; margin-left: -190px; background: linear-gradient(0deg, #6e1608 0%, #c92c1f 28%, #ff7a2e 58%, #ffce6b 82%, #fff6d8 100%); animation: flameflicker 4.5s ease-in-out infinite; }
+  .flame.f2{ width: 180px; height: 72vh; margin-left: -40px; background: linear-gradient(0deg, #5c1206 0%, #b8281d 26%, #ff7228 55%, #ffca62 84%, #fff3d2 100%); animation: flameflicker 5.5s ease-in-out infinite 1.2s; }
+  .flame.f3{ width: 160px; height: 56vh; margin-left: 90px; background: linear-gradient(0deg, #6e1608 0%, #d1332e 30%, #ff8a3d 60%, #ffe17a 88%, #fff9e6 100%); animation: flameflicker 5s ease-in-out infinite 2.4s; opacity: 0.95; }
+  @keyframes flameflicker{
+    0%, 100% { transform: scaleY(1) scaleX(1) rotate(0deg); }
+    25% { transform: scaleY(1.025) scaleX(0.985) rotate(-0.6deg); }
+    50% { transform: scaleY(0.97) scaleX(1.02) rotate(0.6deg); }
+    75% { transform: scaleY(1.015) scaleX(0.99) rotate(-0.4deg); }
+  }
+  @media (prefers-reduced-motion: reduce){ .flame, .fire-ambient{ animation: none; } }
 
   /* sickly color-grade + heavy vignette, over everything */
   .grime{
@@ -128,7 +220,7 @@
     z-index: 4;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 70% 60% at 50% 45%, transparent 40%, rgba(0,0,0,0.55) 100%),
+      radial-gradient(ellipse 90% 80% at 50% 58%, transparent 48%, rgba(0,0,0,0.5) 100%),
       linear-gradient(rgba(90,110,40,0.06), rgba(90,110,40,0.06));
     mix-blend-mode: multiply;
   }
@@ -151,7 +243,7 @@
   }
   @media (prefers-reduced-motion: reduce){ .rain{ animation: none; opacity: 0.08; } }
 
-  /* ---------- scanlines + glitch ---------- */
+  /* ---------- scanlines ---------- */
   .scanlines{
     position: fixed; inset: 0;
     z-index: 3;
@@ -162,17 +254,6 @@
       transparent 1px, transparent 3px);
     mix-blend-mode: overlay;
   }
-  .glitching{
-    animation: glitchjitter .22s steps(3) 1;
-  }
-  @keyframes glitchjitter{
-    0%{ transform: none; text-shadow: none; }
-    20%{ transform: translate(-2px, 1px); text-shadow: -2px 0 var(--cyan), 2px 0 var(--accent); }
-    40%{ transform: translate(2px, -1px); text-shadow: 2px 0 var(--cyan), -2px 0 var(--accent); }
-    60%{ transform: translate(-1px, 0); text-shadow: -1px 0 var(--cyan), 1px 0 var(--accent); }
-    100%{ transform: none; text-shadow: none; }
-  }
-  @media (prefers-reduced-motion: reduce){ .glitching{ animation: none; } }
 
   header, main, footer{ position: relative; z-index: 2; }
 
@@ -189,6 +270,8 @@
     color: var(--bone-soft);
     margin: 0 0 16px;
   }
+  /* the headline as a neon tube sign: saturated color, layered glow,
+     and an irregular flicker rather than a steady pulse */
   h1{
     font-family: 'Archivo', sans-serif;
     font-weight: 600;
@@ -196,14 +279,49 @@
     line-height: 1.02;
     margin: 0 0 20px;
     letter-spacing: -0.005em;
-    color: var(--bone-ink);
     min-height: 1.05em;
+    color: #fff2f8;
+    text-shadow:
+      0 0 4px rgba(255,255,255,0.85),
+      0 0 11px rgba(255,46,126,0.85),
+      0 0 22px rgba(255,46,126,0.7),
+      0 0 46px rgba(255,46,126,0.45),
+      0 0 90px rgba(255,46,126,0.28);
+    animation: neonsign 5s linear infinite;
+  }
+  @keyframes neonsign{
+    0%, 3%, 6%, 40%, 43%, 70%, 73%, 100%{
+      opacity: 1;
+      text-shadow:
+        0 0 4px rgba(255,255,255,0.85),
+        0 0 11px rgba(255,46,126,0.85),
+        0 0 22px rgba(255,46,126,0.7),
+        0 0 46px rgba(255,46,126,0.45),
+        0 0 90px rgba(255,46,126,0.28);
+    }
+    4%, 5%, 41%, 42%, 71%, 72%{
+      opacity: 0.55;
+      text-shadow:
+        0 0 2px rgba(255,255,255,0.4),
+        0 0 5px rgba(255,46,126,0.4);
+    }
+    91%, 94%{
+      opacity: 0.75;
+      text-shadow:
+        0 0 3px rgba(255,255,255,0.6),
+        0 0 8px rgba(255,46,126,0.55),
+        0 0 16px rgba(255,46,126,0.4);
+    }
+  }
+  @media (prefers-reduced-motion: reduce){
+    h1{ animation: none; }
   }
   h1 .caret{
     display: inline-block;
     width: 0.4em;
     height: 0.76em;
-    background: var(--accent);
+    background: var(--neon-magenta);
+    box-shadow: 0 0 10px 2px rgba(255,46,126,0.7);
     margin-left: 3px;
     vertical-align: -0.06em;
     animation: blink 1.1s step-end infinite;
@@ -213,9 +331,21 @@
   header .sub{
     max-width: 46ch;
     color: var(--bone-soft);
-    font-style: italic;
-    font-size: 1.15rem;
-    line-height: 1.6;
+    font-family: 'Big Shoulders Text', sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 1.3rem;
+    line-height: 1.5;
+    margin: 0 0 8px;
+  }
+  .header-byline{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--bone-soft);
+    opacity: 0.75;
     margin: 0 0 34px;
   }
   .chips{
@@ -255,17 +385,52 @@
     padding: 30px 0 110px;
   }
   .shelf-section{ padding: 44px 6vw 10px; }
+  /* each shelf name reads like its own hung neon sign — a script
+     glow inside a thin bordered box, in its own color, flickering
+     on its own irregular schedule */
   .shelf-label{
-    font-family: 'Archivo', sans-serif;
-    font-weight: 600;
-    font-size: 1.05rem;
-    margin: 0 0 18px;
-    color: var(--bone-soft);
+    display: inline-block;
+    font-family: 'Big Shoulders Text', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: clamp(1.3rem, 3vw, 1.65rem);
+    margin: 0 0 20px;
+    padding: 8px 20px 10px;
+    color: #fff8fb;
+    background: rgba(5,5,6,0.35);
+    border: 1.5px solid var(--neon, var(--cyan));
+    border-radius: 6px;
+    text-shadow:
+      0 0 4px rgba(255,255,255,0.85),
+      0 0 10px var(--neon, var(--cyan)),
+      0 0 20px var(--neon, var(--cyan)),
+      0 0 40px var(--neon, var(--cyan));
+    box-shadow:
+      0 0 10px var(--neon, var(--cyan)),
+      inset 0 0 10px rgba(255,255,255,0.06);
+    animation: shelfneon 4.6s linear infinite;
+    animation-delay: var(--neon-delay, 0s);
     opacity: 0;
     transform: translateY(10px);
     transition: opacity .7s ease, transform .7s ease;
   }
   .shelf-section.in-view .shelf-label{ opacity: 1; transform: translateY(0); }
+  @keyframes shelfneon{
+    0%, 4%, 8%, 46%, 50%, 78%, 82%, 100%{
+      text-shadow:
+        0 0 4px rgba(255,255,255,0.85),
+        0 0 10px var(--neon, var(--cyan)),
+        0 0 20px var(--neon, var(--cyan)),
+        0 0 40px var(--neon, var(--cyan));
+      box-shadow: 0 0 10px var(--neon, var(--cyan)), inset 0 0 10px rgba(255,255,255,0.06);
+    }
+    5%, 6%, 47%, 48%, 79%, 80%{
+      text-shadow: 0 0 2px rgba(255,255,255,0.35), 0 0 5px var(--neon, var(--cyan));
+      box-shadow: 0 0 3px var(--neon, var(--cyan));
+    }
+  }
+  @media (prefers-reduced-motion: reduce){ .shelf-label{ animation: none; } }
 
   .shelf-wrap{ position: relative; padding-bottom: 32px; }
   .shelf-platform{
@@ -290,14 +455,20 @@
   }
   @media (prefers-reduced-motion: reduce){ .shelf-platform{ animation: none; } }
 
-  /* the shelf viewport is fixed-width and clips; the track inside it
-     is doubled in JS and drifts sideways in a seamless loop */
+  /* the shelf viewport is fixed-width and clips; shelf-drag holds a
+     manual offset the user can grab and drag; shelf-track (inside it)
+     is doubled in JS and drifts sideways in its own seamless loop —
+     the two transforms stack, so a manual drag doesn't fight the auto-scroll */
   .shelf{
     position: relative;
     z-index: 1;
     overflow: hidden;
     padding: 10px 4px 26px;
+    cursor: grab;
+    touch-action: pan-y;
   }
+  .shelf.dragging{ cursor: grabbing; }
+  .shelf-drag{ display: block; will-change: transform; }
   .shelf-track{
     display: flex;
     align-items: flex-end;
@@ -486,25 +657,22 @@
     margin-bottom: 14px;
   }
   .page-head h2{
-    font-family: 'Archivo', sans-serif;
-    font-weight: 600;
-    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-family: 'Big Shoulders Text', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: clamp(1.8rem, 4.6vw, 2.4rem);
     margin: 0 0 6px;
-    line-height: 1.2;
+    line-height: 1.05;
   }
-  .page-head .byline{
-    font-style: italic;
-    font-size: 0.98rem;
-    color: var(--ink-soft);
-    margin: 0;
-  }
+
 
   .body-text{
     padding: 34px 8vw 46px;
-    font-family: 'Archivo', sans-serif;
+    font-family: 'EB Garamond', serif;
     font-weight: 400;
-    font-size: 1.02rem;
-    line-height: 1.8;
+    font-size: 1.28rem;
+    line-height: 1.75;
     max-width: 62ch;
   }
   .body-text p{ margin: 0 0 1.25em; }
@@ -531,6 +699,15 @@
 
 <div class="skyline-far" id="skylineFar"></div>
 <div class="skyline" id="skyline"></div>
+<div class="street"></div>
+<div class="lamps" id="lamps"></div>
+<div class="cars" id="cars"></div>
+<div class="fire-wrap">
+  <div class="fire-ambient"></div>
+  <div class="flame f1"></div>
+  <div class="flame f2"></div>
+  <div class="flame f3"></div>
+</div>
 <div class="rain"></div>
 <div class="scanlines"></div>
 <div class="grime"></div>
@@ -538,7 +715,8 @@
 <header>
   <p class="eyebrow lower mono">[ a small library ]</p>
   <h1 class="lower" id="mainTitle"><span id="typedText"></span><span class="caret"></span></h1>
-  <p class="sub">work in project</p>
+  <p class="sub">work in project(s)</p>
+  <p class="header-byline lower mono">by fathima shaikh</p>
   <div class="chips" id="chips"></div>
 </header>
 
@@ -552,7 +730,6 @@
       <button class="close-mark" id="closeBtn" aria-label="Close">&#10005;</button>
       <span class="callno lower" id="bookTag"></span>
       <h2 id="bookTitle"></h2>
-      <p class="byline" id="bookByline"></p>
     </div>
     <div class="body-text" id="bookBody"></div>
   </div>
@@ -721,12 +898,12 @@ const overlay = document.getElementById('overlay');
 const pageEl = document.getElementById('page');
 const bookTag = document.getElementById('bookTag');
 const bookTitle = document.getElementById('bookTitle');
-const bookByline = document.getElementById('bookByline');
 const bookBody = document.getElementById('bookBody');
 
 const chipRefs = [];
+const neonColors = ['var(--cyan)', 'var(--sick-green)', 'var(--neon-magenta)', 'var(--accent)'];
 
-function makeBookFloat(book, section, bi){
+function makeBookFloat(book, section, bi, neon){
   const float = document.createElement('div');
   float.className = 'book-float';
   float.style.setProperty('--delay', (bi * 0.5) + 's');
@@ -766,6 +943,7 @@ function makeBookFloat(book, section, bi){
 
 library.forEach((section, si) => {
   const sectionId = 'shelf-' + si;
+  const shelfNeon = neonColors[si % neonColors.length];
 
   const chip = document.createElement('button');
   chip.className = 'chip lower';
@@ -783,6 +961,8 @@ library.forEach((section, si) => {
   const label = document.createElement('p');
   label.className = 'shelf-label lower';
   label.textContent = section.shelf;
+  label.style.setProperty('--neon', shelfNeon);
+  label.style.setProperty('--neon-delay', (si * 1.4) + 's');
   wrap.appendChild(label);
 
   const shelfWrap = document.createElement('div');
@@ -803,14 +983,52 @@ library.forEach((section, si) => {
   // render the row twice back-to-back so a 50%-width translateX loops seamlessly
   for (let copy = 0; copy < 2; copy++){
     section.books.forEach((book, bi) => {
-      track.appendChild(makeBookFloat(book, section, bi));
+      track.appendChild(makeBookFloat(book, section, bi, shelfNeon));
     });
   }
-  shelf.appendChild(track);
 
-  // pause the drift on touch devices while someone's trying to tap a book
-  shelf.addEventListener('touchstart', () => track.classList.add('paused'), { passive: true });
-  shelf.addEventListener('touchend', () => setTimeout(() => track.classList.remove('paused'), 400));
+  // shelfDrag carries a manual offset (from dragging); shelf-track keeps
+  // auto-looping inside it — the two transforms stack, so grabbing a
+  // shelf and pulling it just shifts where the auto-scroll continues from
+  const shelfDrag = document.createElement('div');
+  shelfDrag.className = 'shelf-drag';
+  shelfDrag.appendChild(track);
+  shelf.appendChild(shelfDrag);
+
+  let dragOffset = 0;
+  let dragging = false, dragStartX = 0, dragStartOffset = 0, moved = false, justDragged = false;
+
+  shelf.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    dragging = true;
+    moved = false;
+    dragStartX = e.clientX;
+    dragStartOffset = dragOffset;
+    track.classList.add('paused');
+    shelf.classList.add('dragging');
+  });
+  window.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    const delta = e.clientX - dragStartX;
+    if (Math.abs(delta) > 4) moved = true;
+    dragOffset = dragStartOffset + delta;
+    shelfDrag.style.transform = `translateX(${dragOffset}px)`;
+  });
+  function endDrag(){
+    if (!dragging) return;
+    dragging = false;
+    justDragged = moved;
+    shelf.classList.remove('dragging');
+    track.classList.remove('paused');
+  }
+  window.addEventListener('pointerup', endDrag);
+  window.addEventListener('pointercancel', endDrag);
+
+  // if the pointer interaction was actually a drag, swallow the click so
+  // it doesn't also open whichever book happened to be under the cursor
+  shelf.addEventListener('click', e => {
+    if (justDragged) { e.stopPropagation(); e.preventDefault(); justDragged = false; }
+  }, true);
 
   shelfWrap.appendChild(shelf);
   wrap.appendChild(shelfWrap);
@@ -828,7 +1046,6 @@ library.forEach((section, si) => {
 function openBook(book, shelfName){
   bookTag.textContent = shelfName;
   bookTitle.textContent = book.title;
-  bookByline.textContent = 'by ' + book.author;
   bookBody.innerHTML = book.paragraphs.map(p => `<p>${p}</p>`).join('');
   overlay.classList.add('open');
   pageEl.scrollTop = 0;
@@ -860,18 +1077,30 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBook();
     fx += bw + 30 + Math.random() * 60;
   }
 
-  const signColors = ['magenta', 'red', 'green'];
   const count = Math.max(10, Math.ceil(w / 90));
+  const landmarkIndex = Math.floor(count / 2);
   let x = -20;
   for (let i = 0; i < count; i++){
-    const bw = 60 + Math.random() * 70;
-    const bh = 80 + Math.random() * 220;
+    const isLandmark = i === landmarkIndex;
+    const bw = isLandmark ? 92 : 60 + Math.random() * 70;
+    const bh = isLandmark ? 360 + Math.random() * 40 : 80 + Math.random() * 220;
     const b = document.createElement('div');
     b.className = 'building';
     b.style.left = x + 'px';
     b.style.width = bw + 'px';
     b.style.height = bh + 'px';
     skyline.appendChild(b);
+
+    if (isLandmark){
+      // a nod to the twin antennas on the Willis Tower
+      [bw * 0.3, bw * 0.7].forEach(offset => {
+        const spike = document.createElement('div');
+        spike.className = 'spike';
+        spike.style.left = (x + offset) + 'px';
+        spike.style.height = (30 + Math.random() * 16) + 'px';
+        skyline.appendChild(spike);
+      });
+    }
 
     const cols = Math.max(2, Math.floor(bw / 16));
     const rows = Math.max(3, Math.floor(bh / 22));
@@ -887,28 +1116,101 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBook();
       }
     }
 
-    // roughly one in five buildings gets a hung neon sign
-    if (Math.random() > 0.8 && bh > 110){
-      const sign = document.createElement('div');
-      const color = signColors[Math.floor(Math.random() * signColors.length)];
-      const vertical = Math.random() > 0.5;
-      sign.className = 'sign ' + color;
-      if (vertical){
-        sign.style.width = '5px';
-        sign.style.height = (30 + Math.random() * 40) + 'px';
-      } else {
-        sign.style.width = (24 + Math.random() * 34) + 'px';
-        sign.style.height = '5px';
-      }
-      sign.style.left = (x + bw * 0.3 + Math.random() * bw * 0.4) + 'px';
-      sign.style.bottom = (bh * 0.3 + Math.random() * bh * 0.4) + 'px';
-      sign.style.animationDelay = (Math.random() * 6) + 's';
-      skyline.appendChild(sign);
-    }
-
     x += bw + 6 + Math.random() * 14;
   }
 })();
+
+// streetlamps, evenly spaced along the sidewalk
+(function buildLamps(){
+  const lamps = document.getElementById('lamps');
+  const streetH = Math.max(52, window.innerHeight * 0.08);
+  const w = window.innerWidth;
+  const spacing = 160;
+  for (let x = 40; x < w; x += spacing + Math.random() * 40){
+    const lamp = document.createElement('div');
+    lamp.className = 'lamp' + (Math.random() > 0.6 ? ' flicker' : '');
+    const postHeight = 78 + Math.random() * 20;
+    lamp.style.left = x + 'px';
+    lamp.style.bottom = streetH + 'px';
+    lamp.style.height = postHeight + 'px';
+    const bulb = document.createElement('div');
+    bulb.className = 'bulb';
+    bulb.style.animationDelay = (Math.random() * 6) + 's';
+    lamp.appendChild(bulb);
+    lamps.appendChild(lamp);
+  }
+})();
+
+// little cars, two lanes driving opposite directions
+// builds a small cartoon car SVG: a body + cabin + wheels, with
+// extra markings layered on for taxis (roof light) and ambulances
+// (cross + light bar)
+function carSVG(kind, color){
+  let extras = '';
+  if (kind === 'taxi'){
+    extras += '<rect x="17" y="0" width="9" height="3" rx="1" fill="#1c1c1c"/>';
+    extras += '<rect x="18" y="0.6" width="7" height="1.8" fill="#fff4c2"/>';
+    extras += '<rect x="4" y="11.5" width="3" height="2.5" fill="#1c1c1c"/>';
+    extras += '<rect x="10" y="11.5" width="3" height="2.5" fill="#1c1c1c"/>';
+  }
+  if (kind === 'ambulance'){
+    extras += '<rect x="17" y="0" width="5" height="2.4" rx="0.8" fill="#d1332e"/>';
+    extras += '<rect x="22" y="0" width="5" height="2.4" rx="0.8" fill="#3d6fd8"/>';
+    extras += '<rect x="16.5" y="10.5" width="2" height="6" fill="#d1332e"/>';
+    extras += '<rect x="14.5" y="12.5" width="6" height="2" fill="#d1332e"/>';
+  }
+  return `<svg viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="10" width="40" height="7" rx="3" fill="${color}"/>
+    <rect x="11" y="2" width="21" height="9" rx="4" fill="${color}"/>
+    <rect x="14" y="4" width="7" height="5" rx="1.4" fill="#cfe8f5" opacity="0.85"/>
+    <rect x="23" y="4" width="7" height="5" rx="1.4" fill="#cfe8f5" opacity="0.85"/>
+    ${extras}
+    <circle cx="11" cy="18" r="3.2" fill="#161616"/>
+    <circle cx="11" cy="18" r="1.1" fill="#5a5a5a"/>
+    <circle cx="33" cy="18" r="3.2" fill="#161616"/>
+    <circle cx="33" cy="18" r="1.1" fill="#5a5a5a"/>
+    <circle cx="41" cy="13" r="1.3" fill="#ffe28a"/>
+    <circle cx="3" cy="13" r="1.3" fill="#c0392b"/>
+  </svg>`;
+}
+
+(function buildCars(){
+  const cars = document.getElementById('cars');
+  const streetH = Math.max(52, window.innerHeight * 0.08);
+  const colors = ['#d1332e', '#3d6fd8', '#e0b23a', '#8f938f', '#2c2f33', '#5fd4c8', '#7a4fc9'];
+  const lanes = [
+    { bottom: streetH * 0.62, dir: 'drive-right' },
+    { bottom: streetH * 0.3,  dir: 'drive-left' }
+  ];
+  lanes.forEach(lane => {
+    const carCount = 4;
+    for (let i = 0; i < carCount; i++){
+      const roll = Math.random();
+      const kind = roll > 0.88 ? 'ambulance' : roll > 0.7 ? 'taxi' : 'normal';
+      const color = kind === 'taxi' ? '#f4c430' : kind === 'ambulance' ? '#f2f2f0' : colors[Math.floor(Math.random() * colors.length)];
+
+      const car = document.createElement('div');
+      const width = 30 + Math.random() * 10;
+      const height = width / 2.2;
+      const duration = 9 + Math.random() * 10;
+      car.className = 'car';
+      car.style.width = width + 'px';
+      car.style.height = height + 'px';
+      car.style.bottom = lane.bottom + 'px';
+      car.style.animationName = lane.dir;
+      car.style.animationDuration = duration + 's';
+      car.style.animationDelay = (-Math.random() * duration) + 's';
+      car.innerHTML = carSVG(kind, color);
+      if (lane.dir === 'drive-left'){
+        const svg = car.querySelector('svg');
+        svg.style.transform = 'scaleX(-1)';
+      }
+      cars.appendChild(car);
+    }
+  });
+})();
+
+
 
 // reveal shelf sections + scrollspy nav highlighting
 const io = new IntersectionObserver(entries => {
@@ -933,16 +1235,6 @@ function onScroll(){
 }
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
-
-// occasional, brief glitch flicker on the headline — signal instability
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (!reduceMotion){
-  const titleEl = document.getElementById('mainTitle');
-  setInterval(() => {
-    titleEl.classList.add('glitching');
-    setTimeout(() => titleEl.classList.remove('glitching'), 240);
-  }, 7000 + Math.random() * 5000);
-}
 
 // one-time typewriter reveal of the headline
 const fullTitle = "reading room";
