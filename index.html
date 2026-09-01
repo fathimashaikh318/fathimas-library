@@ -199,13 +199,14 @@
     position: absolute;
     bottom: 0;
     left: 50%;
-    clip-path: polygon(50% 0%, 78% 18%, 64% 42%, 88% 58%, 62% 100%, 38% 100%, 12% 58%, 36% 42%, 22% 18%);
     transform-origin: 50% 100%;
-    filter: blur(1.5px);
+    mix-blend-mode: screen;
+    opacity: 0.8;
   }
-  .flame.f1{ width: 210px; height: 62vh; margin-left: -190px; background: linear-gradient(0deg, #6e1608 0%, #c92c1f 28%, #ff7a2e 58%, #ffce6b 82%, #fff6d8 100%); animation: flameflicker 4.5s ease-in-out infinite; }
-  .flame.f2{ width: 180px; height: 72vh; margin-left: -40px; background: linear-gradient(0deg, #5c1206 0%, #b8281d 26%, #ff7228 55%, #ffca62 84%, #fff3d2 100%); animation: flameflicker 5.5s ease-in-out infinite 1.2s; }
-  .flame.f3{ width: 160px; height: 56vh; margin-left: 90px; background: linear-gradient(0deg, #6e1608 0%, #d1332e 30%, #ff8a3d 60%, #ffe17a 88%, #fff9e6 100%); animation: flameflicker 5s ease-in-out infinite 2.4s; opacity: 0.95; }
+  .flame svg{ display: block; width: 100%; height: 100%; }
+  .flame.f1{ width: 210px; height: 62vh; margin-left: -190px; animation: flameflicker 4.5s ease-in-out infinite; }
+  .flame.f2{ width: 180px; height: 72vh; margin-left: -40px; animation: flameflicker 5.5s ease-in-out infinite 1.2s; }
+  .flame.f3{ width: 160px; height: 56vh; margin-left: 90px; animation: flameflicker 5s ease-in-out infinite 2.4s; opacity: 0.7; }
   @keyframes flameflicker{
     0%, 100% { transform: scaleY(1) scaleX(1) rotate(0deg); }
     25% { transform: scaleY(1.025) scaleX(0.985) rotate(-0.6deg); }
@@ -704,9 +705,24 @@
 <div class="cars" id="cars"></div>
 <div class="fire-wrap">
   <div class="fire-ambient"></div>
-  <div class="flame f1"></div>
-  <div class="flame f2"></div>
-  <div class="flame f3"></div>
+  <div class="flame f1">
+    <svg viewBox="0 0 100 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 6 C62 22 40 30 46 46 C33 36 18 50 16 68 C14 92 30 116 50 128 C38 112 32 98 38 84 C45 92 55 88 56 74 C66 82 74 66 68 48 C78 56 82 38 72 20 C66 30 62 24 62 16 C62 11 56 6 50 6 Z" fill="#9c3a22" fill-opacity="0.55"/>
+      <path d="M50 46 C56 54 47 58 50 66 C43 60 36 68 35 80 C34 94 42 108 50 114 C45 104 42 96 45 90 C49 94 54 91 55 84 C61 88 65 78 60 68 C64 62 65 54 59 48 C56 52 54 50 54 46 Z" fill="#d98a4a" fill-opacity="0.6"/>
+    </svg>
+  </div>
+  <div class="flame f2">
+    <svg viewBox="0 0 100 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 6 C62 22 40 30 46 46 C33 36 18 50 16 68 C14 92 30 116 50 128 C38 112 32 98 38 84 C45 92 55 88 56 74 C66 82 74 66 68 48 C78 56 82 38 72 20 C66 30 62 24 62 16 C62 11 56 6 50 6 Z" fill="#9c3a22" fill-opacity="0.55"/>
+      <path d="M50 46 C56 54 47 58 50 66 C43 60 36 68 35 80 C34 94 42 108 50 114 C45 104 42 96 45 90 C49 94 54 91 55 84 C61 88 65 78 60 68 C64 62 65 54 59 48 C56 52 54 50 54 46 Z" fill="#d98a4a" fill-opacity="0.6"/>
+    </svg>
+  </div>
+  <div class="flame f3">
+    <svg viewBox="0 0 100 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 6 C62 22 40 30 46 46 C33 36 18 50 16 68 C14 92 30 116 50 128 C38 112 32 98 38 84 C45 92 55 88 56 74 C66 82 74 66 68 48 C78 56 82 38 72 20 C66 30 62 24 62 16 C62 11 56 6 50 6 Z" fill="#9c3a22" fill-opacity="0.55"/>
+      <path d="M50 46 C56 54 47 58 50 66 C43 60 36 68 35 80 C34 94 42 108 50 114 C45 104 42 96 45 90 C49 94 54 91 55 84 C61 88 65 78 60 68 C64 62 65 54 59 48 C56 52 54 50 54 46 Z" fill="#d98a4a" fill-opacity="0.6"/>
+    </svg>
+  </div>
 </div>
 <div class="rain"></div>
 <div class="scanlines"></div>
