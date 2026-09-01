@@ -54,8 +54,8 @@
   .skyline-far{
     position: fixed;
     left: 0; right: 0; bottom: 0;
-    height: 56vh;
-    z-index: -1;
+    height: 64vh;
+    z-index: -2;
     pointer-events: none;
     overflow: hidden;
     filter: blur(2px);
@@ -64,7 +64,7 @@
   .skyline{
     position: fixed;
     left: 0; right: 0; bottom: 0;
-    height: 50vh;
+    height: 56vh;
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
@@ -1083,7 +1083,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBook();
   const farCount = Math.max(6, Math.ceil(w / 220));
   for (let i = 0; i < farCount; i++){
     const bw = 140 + Math.random() * 220;
-    const bh = 160 + Math.random() * 280;
+    const bh = 240 + Math.random() * 340;
     const b = document.createElement('div');
     b.className = 'building far';
     b.style.left = fx + 'px';
@@ -1099,7 +1099,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBook();
   for (let i = 0; i < count; i++){
     const isLandmark = i === landmarkIndex;
     const bw = isLandmark ? 92 : 60 + Math.random() * 70;
-    const bh = isLandmark ? 360 + Math.random() * 40 : 80 + Math.random() * 220;
+    const bh = isLandmark ? 440 + Math.random() * 70 : 140 + Math.random() * 300;
     const b = document.createElement('div');
     b.className = 'building';
     b.style.left = x + 'px';
@@ -1132,7 +1132,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBook();
       }
     }
 
-    x += bw + 6 + Math.random() * 14;
+    x += bw + 4 + Math.random() * 10;
   }
 })();
 
