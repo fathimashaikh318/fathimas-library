@@ -5,26 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>reading room</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --sky-top: #383e56;
-    --sky-mid: #545a76;
-    --sky-bottom: #888ea2;
-    --cloud: #dde1ea;
-    --paper: #eef0f4;
-    --paper-2: #dde1ea;
-    --ink: #232733;
-    --ink-soft: #5b6073;
-    --bone-ink: #eef0f5;
-    --bone-soft: #aab0c2;
-    --accent: #8b98d1;
+    --void: #0b0c0a;
+    --void-2: #14150f;
+    --concrete: #2c3037;
+    --concrete-2: #1a1c20;
+    --paper: #e6e3da;
+    --paper-2: #d5d1c4;
+    --ink: #1c1e1f;
+    --ink-soft: #55584f;
+    --bone-ink: #eae7de;
+    --bone-soft: #93968f;
+    --accent: #e0a458;
+    --cyan: #5fd4c8;
+    --neon-magenta: #ff2e7e;
+    --neon-red: #d1332e;
+    --sick-green: #8fae3a;
   }
   *{ box-sizing: border-box; }
   html{ scroll-behavior: smooth; }
   html,body{ margin:0; padding:0; }
   body{
-    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 55%, var(--sky-bottom) 100%);
+    background: linear-gradient(180deg, var(--void) 0%, var(--void-2) 55%, var(--void) 100%);
     min-height: 100vh;
     font-family: 'Newsreader', serif;
     color: var(--bone-ink);
@@ -32,6 +36,7 @@
     position: relative;
   }
   .lower{ text-transform: lowercase; }
+  .mono{ font-family: 'IBM Plex Mono', monospace; }
 
   /* ---------- scroll progress ---------- */
   .progress{
@@ -40,47 +45,134 @@
     height: 2px;
     width: 0%;
     background: var(--accent);
-    box-shadow: 0 0 8px 1px rgba(139,152,209,0.6);
+    box-shadow: 0 0 8px 1px rgba(224,164,88,0.6);
     z-index: 100;
     transition: width .1s linear;
   }
 
-  /* ---------- drifting clouds ---------- */
-  .clouds{ position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-  .cloud{
+  /* ---------- skyline ---------- */
+  .skyline-far{
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    height: 44vh;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    filter: blur(2px);
+    opacity: 0.55;
+  }
+  .skyline{
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    height: 40vh;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .skyline::before{
+    content: "";
     position: absolute;
-    border-radius: 50%;
-    filter: blur(70px);
-    background: var(--cloud);
-    animation: driftx linear infinite;
+    inset: 0;
+    background: linear-gradient(180deg, var(--void) 0%, transparent 40%);
+    z-index: 2;
   }
-  .cloud.c1{ width: 640px; height: 240px; top: 6%;  opacity: 0.28; animation-duration: 85s; animation-delay: -10s; }
-  .cloud.c2{ width: 520px; height: 200px; top: 22%; opacity: 0.2;  animation-duration: 110s; animation-delay: -40s; }
-  .cloud.c3{ width: 760px; height: 280px; top: 40%; opacity: 0.16; animation-duration: 140s; animation-delay: -70s; }
-  .cloud.c4{ width: 460px; height: 180px; top: 58%; opacity: 0.22; animation-duration: 95s;  animation-delay: -25s; }
-  @keyframes driftx{
-    from { transform: translateX(-40vw); }
-    to   { transform: translateX(120vw); }
+  .building{
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(180deg, var(--concrete) 0%, var(--concrete-2) 100%);
   }
-  @media (prefers-reduced-motion: reduce){ .cloud{ animation: none; } }
+  .building.far{
+    background: linear-gradient(180deg, #1c1e18 0%, #101208 100%);
+  }
+  .window{
+    position: absolute;
+    width: 4px; height: 7px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+  .window.cyan{ background: var(--cyan); }
+  .window.flicker{ animation: flicker 5s ease-in-out infinite; }
+  @keyframes flicker{
+    0%, 42% { opacity: 0.55; }
+    50% { opacity: 0.05; }
+    58% { opacity: 0.5; }
+    80% { opacity: 0.15; }
+    86% { opacity: 0.55; }
+    100% { opacity: 0.55; }
+  }
+  @media (prefers-reduced-motion: reduce){ .window.flicker{ animation: none; opacity: 0.4; } }
+
+  /* neon signage, hung on a handful of buildings */
+  .sign{
+    position: absolute;
+    border-radius: 1px;
+    filter: blur(0.2px);
+    animation: neonflicker 6s ease-in-out infinite;
+  }
+  .sign.magenta{ background: var(--neon-magenta); box-shadow: 0 0 10px 2px rgba(255,46,126,0.7), 0 0 24px 4px rgba(255,46,126,0.3); }
+  .sign.red{ background: var(--neon-red); box-shadow: 0 0 10px 2px rgba(209,51,46,0.7), 0 0 24px 4px rgba(209,51,46,0.3); }
+  .sign.green{ background: var(--sick-green); box-shadow: 0 0 10px 2px rgba(143,174,58,0.7), 0 0 24px 4px rgba(143,174,58,0.3); }
+  @keyframes neonflicker{
+    0%, 88% { opacity: 1; }
+    90% { opacity: 0.2; }
+    92% { opacity: 1; }
+    94% { opacity: 0.3; }
+    96% { opacity: 1; }
+    100% { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce){ .sign{ animation: none; } }
+
+  /* sickly color-grade + heavy vignette, over everything */
+  .grime{
+    position: fixed; inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 45%, transparent 40%, rgba(0,0,0,0.55) 100%),
+      linear-gradient(rgba(90,110,40,0.06), rgba(90,110,40,0.06));
+    mix-blend-mode: multiply;
+  }
 
   /* ---------- rain ---------- */
   .rain{
     position: fixed; inset: 0;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.22;
-    background-image: repeating-linear-gradient(100deg,
-      rgba(238,240,245,0.5) 0px, rgba(238,240,245,0.5) 1px,
-      transparent 1px, transparent 20px);
-    background-size: 100% 160px;
-    animation: rainfall 0.6s linear infinite;
+    opacity: 0.14;
+    background-image: repeating-linear-gradient(102deg,
+      rgba(234,231,222,0.5) 0px, rgba(234,231,222,0.5) 1px,
+      transparent 1px, transparent 22px);
+    background-size: 100% 170px;
+    animation: rainfall 0.65s linear infinite;
   }
   @keyframes rainfall{
     from { background-position: 0 0; }
-    to   { background-position: -55px 160px; }
+    to   { background-position: -60px 170px; }
   }
-  @media (prefers-reduced-motion: reduce){ .rain{ animation: none; opacity: 0.12; } }
+  @media (prefers-reduced-motion: reduce){ .rain{ animation: none; opacity: 0.08; } }
+
+  /* ---------- scanlines + glitch ---------- */
+  .scanlines{
+    position: fixed; inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: repeating-linear-gradient(0deg,
+      rgba(255,255,255,0.7) 0px, rgba(255,255,255,0.7) 1px,
+      transparent 1px, transparent 3px);
+    mix-blend-mode: overlay;
+  }
+  .glitching{
+    animation: glitchjitter .22s steps(3) 1;
+  }
+  @keyframes glitchjitter{
+    0%{ transform: none; text-shadow: none; }
+    20%{ transform: translate(-2px, 1px); text-shadow: -2px 0 var(--cyan), 2px 0 var(--accent); }
+    40%{ transform: translate(2px, -1px); text-shadow: 2px 0 var(--cyan), -2px 0 var(--accent); }
+    60%{ transform: translate(-1px, 0); text-shadow: -1px 0 var(--cyan), 1px 0 var(--accent); }
+    100%{ transform: none; text-shadow: none; }
+  }
+  @media (prefers-reduced-motion: reduce){ .glitching{ animation: none; } }
 
   header, main, footer{ position: relative; z-index: 2; }
 
@@ -92,8 +184,8 @@
   }
   .eyebrow{
     display: inline-block;
-    font-style: italic;
-    font-size: 0.95rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
     color: var(--bone-soft);
     margin: 0 0 16px;
   }
@@ -132,12 +224,12 @@
     gap: 10px;
   }
   .chip{
-    font-family: 'Archivo', sans-serif;
-    font-size: 0.82rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
     padding: 9px 18px;
-    border-radius: 999px;
-    border: 1px solid rgba(238,240,245,0.22);
-    background: rgba(238,240,245,0.05);
+    border-radius: 3px;
+    border: 1px solid rgba(234,231,222,0.18);
+    background: rgba(234,231,222,0.04);
     color: var(--bone-ink);
     cursor: pointer;
     position: relative;
@@ -153,7 +245,7 @@
     transform-origin: left;
     transition: transform .35s ease;
   }
-  .chip:hover{ border-color: var(--accent); background: rgba(139,152,209,0.12); }
+  .chip:hover{ border-color: var(--accent); background: rgba(224,164,88,0.1); }
   .chip.active::after{ transform: scaleX(1); }
 
   /* ---------- shelves ---------- */
@@ -182,7 +274,7 @@
     bottom: 20px;
     height: 4px;
     border-radius: 999px;
-    background: linear-gradient(90deg, transparent, rgba(238,240,245,0.55), transparent);
+    background: linear-gradient(90deg, transparent, rgba(224,164,88,0.4), transparent);
     transform: rotate(-0.3deg);
     animation: sway 10s ease-in-out infinite;
     z-index: 0;
@@ -198,27 +290,42 @@
   }
   @media (prefers-reduced-motion: reduce){ .shelf-platform{ animation: none; } }
 
+  /* the shelf viewport is fixed-width and clips; the track inside it
+     is doubled in JS and drifts sideways in a seamless loop */
   .shelf{
     position: relative;
     z-index: 1;
+    overflow: hidden;
+    padding: 10px 4px 26px;
+  }
+  .shelf-track{
     display: flex;
     align-items: flex-end;
     gap: 20px;
-    overflow-x: auto;
-    padding: 10px 4px 26px;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-    cursor: grab;
-    user-select: none;
+    width: max-content;
+    animation-name: marquee;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-duration: var(--duration, 50s);
+    animation-direction: var(--dir, normal);
   }
-  .shelf.dragging{ cursor: grabbing; }
-  .shelf::-webkit-scrollbar{ display: none; }
+  .shelf:hover .shelf-track,
+  .shelf-track.paused{
+    animation-play-state: paused;
+  }
+  @keyframes marquee{
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .shelf-track{ animation: none; }
+    .shelf{ overflow-x: auto; }
+  }
 
   .book-float{
     flex: 0 0 auto;
     width: 156px;
     height: 244px;
-    scroll-snap-align: start;
     animation: sway 8s ease-in-out infinite;
     animation-delay: var(--delay, 0s);
     opacity: 0;
@@ -246,7 +353,7 @@
     font-family: inherit;
     color: var(--ink);
     overflow: hidden;
-    box-shadow: 0 16px 26px -12px rgba(20,22,32,0.5);
+    box-shadow: 0 16px 26px -12px rgba(0,0,0,0.6);
     transition: transform .5s cubic-bezier(.2,.7,.3,1), box-shadow .5s ease;
   }
   .book::before{
@@ -254,7 +361,7 @@
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 13px;
-    background: linear-gradient(90deg, rgba(35,39,51,0.16), transparent);
+    background: linear-gradient(90deg, rgba(28,30,31,0.18), transparent);
   }
   .book::after{
     content: "";
@@ -264,19 +371,20 @@
     border-radius: 0 6px 6px 0;
     background: repeating-linear-gradient(
       180deg,
-      rgba(35,39,51,0.22) 0px, rgba(35,39,51,0.22) 1.5px,
+      rgba(28,30,31,0.24) 0px, rgba(28,30,31,0.24) 1.5px,
       transparent 1.5px, transparent 4px
     );
   }
   .book:hover, .book:focus-visible{
     transform: translateY(-12px);
-    box-shadow: 0 24px 34px -12px rgba(20,22,32,0.55), 0 0 0 1px rgba(139,152,209,0.35);
+    box-shadow: 0 24px 34px -12px rgba(0,0,0,0.65), 0 0 0 1px rgba(224,164,88,0.4);
     outline: none;
   }
   .book .callno{
     align-self: flex-start;
-    font-size: 0.78rem;
-    font-style: italic;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.02em;
     color: var(--ink-soft);
     position: relative;
     z-index: 1;
@@ -291,7 +399,7 @@
   }
   .book .arrow{
     font-size: 1rem;
-    opacity: 0.7;
+    opacity: 0.8;
     color: var(--accent);
     transform: translateX(0);
     transition: transform .3s ease;
@@ -303,7 +411,7 @@
   /* ---------- reading overlay ---------- */
   .overlay{
     position: fixed; inset: 0;
-    background: rgba(20,22,32,0.6);
+    background: rgba(12,14,17,0.72);
     backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
@@ -322,25 +430,44 @@
     width: min(640px, 100%);
     max-height: 86vh;
     overflow-y: auto;
+    overflow-x: hidden;
     border-radius: 6px;
-    box-shadow: 0 40px 90px rgba(20,22,32,0.5);
+    box-shadow: 0 40px 90px rgba(0,0,0,0.6);
     transform: scale(0.96) translateY(16px);
     transition: transform .5s cubic-bezier(.2,.7,.3,1);
     position: relative;
   }
   .overlay.open .page{ transform: scale(1) translateY(0); }
 
+  .page::after{
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: -12%;
+    height: 12%;
+    background: linear-gradient(180deg, transparent 0%, rgba(224,164,88,0.35) 50%, transparent 100%);
+    pointer-events: none;
+    opacity: 0;
+  }
+  .overlay.open .page::after{
+    animation: scan 0.9s ease-out .1s 1;
+  }
+  @keyframes scan{
+    0%{ top: -12%; opacity: 1; }
+    85%{ opacity: 0.5; }
+    100%{ top: 108%; opacity: 0; }
+  }
+
   .page-head{
     padding: 40px 8vw 24px;
     position: relative;
-    border-bottom: 1px solid rgba(35,39,51,0.12);
+    border-bottom: 1px solid rgba(28,30,31,0.14);
   }
   .close-mark{
     position: absolute;
     top: 20px; right: 20px;
     width: 34px; height: 34px;
     border-radius: 50%;
-    border: 1px solid rgba(35,39,51,0.2);
+    border: 1px solid rgba(28,30,31,0.22);
     background: transparent;
     color: var(--ink);
     font-family: 'Archivo', sans-serif;
@@ -348,12 +475,13 @@
     cursor: pointer;
     transition: border-color .25s ease, background .25s ease;
   }
-  .close-mark:hover{ border-color: var(--accent); background: rgba(139,152,209,0.15); }
+  .close-mark:hover{ border-color: var(--accent); background: rgba(224,164,88,0.15); }
 
   .page-head .callno{
     display: block;
-    font-style: italic;
-    font-size: 0.85rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
     color: var(--ink-soft);
     margin-bottom: 14px;
   }
@@ -383,8 +511,9 @@
   footer{
     text-align: center;
     color: var(--bone-soft);
-    font-style: italic;
-    font-size: 0.9rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
     padding: 10px 0 60px;
   }
 
@@ -399,24 +528,22 @@
 
 <div class="progress" id="progress"></div>
 
-<div class="clouds">
-  <div class="cloud c1"></div>
-  <div class="cloud c2"></div>
-  <div class="cloud c3"></div>
-  <div class="cloud c4"></div>
-</div>
+<div class="skyline-far" id="skylineFar"></div>
+<div class="skyline" id="skyline"></div>
 <div class="rain"></div>
+<div class="scanlines"></div>
+<div class="grime"></div>
 
 <header>
-  <p class="eyebrow lower">a small library</p>
-  <h1 class="lower"><span id="typedText"></span><span class="caret"></span></h1>
+  <p class="eyebrow lower mono">[ a small library ]</p>
+  <h1 class="lower" id="mainTitle"><span id="typedText"></span><span class="caret"></span></h1>
   <p class="sub">when shit hits the fan</p>
   <div class="chips" id="chips"></div>
 </header>
 
 <main id="shelves"></main>
 
-<footer class="lower">grab a shelf and drag — there's more if you scroll sideways</footer>
+<footer class="lower">shelves drift on their own — hover to pause, tap a book to open</footer>
 
 <div class="overlay" id="overlay">
   <div class="page" id="page">
@@ -542,20 +669,6 @@ const library = [
           "Still, I yearned to be connected to him, to know who this man was and in what way his blood unfurled in my veins, beyond our facial structure and bitten nails, in the unseen. Was it the brain that never turned off, thought after thought being churned out, bitter and unkempt? Wearing the clothes he wore enabled me to reach this higher level of intimacy that I craved, even if I hated the way the sheep fur matted and clung, the deep onset blue of that jacket.",
           "So yes, despite my growing contempt of this jacket, I would never be caught on a chilly day without it, even as the continuous wear has caused a little bit of shedding here and there and the threads have begun to pull out. My father himself never sees me wear it, how could he? He is across the country after all, and never in my life have we FaceTime'd oh so casually. Still, I think of my stubborn refusal to shed this jacket like old skin as a testimony to the likeliness between us, and in the depth of night, when I find my mind wandering to all that I will never know about him, the jacket brings me great comfort."
         ]
-      },
-      {
-        title: "On Being Late",
-        author: "Your Name",
-        paragraphs: [
-          "Drop your essay text in here. The reading page supports as many paragraphs as you need — it scrolls."
-        ]
-      },
-      {
-        title: "A Short History of My Kitchen Table",
-        author: "Your Name",
-        paragraphs: [
-          "Placeholder text for a longer essay title, to show how it looks on the card when it runs long."
-        ]
       }
     ]
   },
@@ -573,7 +686,7 @@ const library = [
         ]
       },
       {
-        title: "what do you think about when it is night time",
+        title: "what do you think about when it is night tiem",
         author: "Fathima",
         paragraphs: [
           "What do you think about when it is nighttime, and you are alone and shivering? You are feverish and alone. The fan is on, normally the whirring helps you sleep. Even though you are cold and even though the caffeine you consumed just a couple hours before is whirring through your veins, heart beat beat beat beat beat at a pace that gets you nervous, you keep that fan on. Tonight, you lay awake and stare at the ceiling, your favorite form of torture, watching the rotation, start calculating the RPM of whirring blades in your mind, give up halfway and think about the time you were 8 and scraped your knee during recess instead. You had cried and your knee had bled. You never liked blood. Watched it trickle down your shin, you limped, perhaps with a flair of unnecessary dramatism, to the corner of the basketball court, wished you were anywhere but there, at elementary school, at recess, grappling for a ball with a bunch of other kids. You miss your mom. You always miss your mom. The other kids whisper from the middle of the court, looking between you and the boy who had pushed you and the teacher far off in the field, who is on her phone and perhaps calling her husband. The kids wonder how to deal with such a precarious situation, a little bit of blood, a crying 8-year-old boy they found abnormal - though their internal detestment of him was not due to anything in particular. I mean, for God's Sake, they were 8 too, how could they pinpoint what they liked or didn't like about a person, who they chose to worship and who they chose to take the blows of the somehow hierarchical structure that 3rd grade brought? Blasphemy, really. Of course, you don't think this when you're 8, but when you're 19 instead, lying in your bed alone and unable to sleep. Back on the basketball court, the decision has been made by the huddle. We will let the crying boy cry, we will continue on with our game, balls fumbling, shrill laughter. Girls continue playing hopscotch. You accept this decision with a tinge of relief, open your lunchbox your mom packed for you, and even at 8, you feel an overpowering love and adoration for this action, for the vision of your mother up at 6 am, slicing tomatoes with precision, toasting bread and laying out the ingredients, cutting a banana in half because she knows you won't eat the whole thing -- she will take the other half for herself instead. That will be her breakfast that she eats after she drops you off at school, she will eat it on her drive back, when she is alone in the car and calling her own mother, across the country.",
@@ -585,6 +698,16 @@ const library = [
         author: "Fathima",
         paragraphs: [
           "You ask me to tell you the truth and I<br>tell you underneath the willow tree,<br>which one of those? the truth?<br>brush hair out of your eyes, kiss your lips<br>instead. Is it that which we cannot<br>see, that which<br>is right with an undeniable persistence,<br>a confidence that stands to disrupt.<br>I tell you I don't know. I don't know.<br>Page through books and grass<br>with an urgency that aches to kill,<br>seek to grasp at something with<br>a tangible existence, something<br>that stays rooted with permanence,<br>something that stains. Words that are<br>spoken haphazardly strewn from<br>anger, is that the truth, the core of<br>a man beaten to the bone?<br>Handcuffs to an innocent who dared<br>to question, is that the truth? Steel<br>bars, a military plane, strewn apart<br>limbs, is this the truth? Blood and<br>rubble, charred flesh, a being<br>without a soul, an iron fist,<br>a law: IS THIS THE TRUTH?<br>Hush you whisper,<br>holding me and all my<br>broken bits -- and now this time I ask you,<br>no no, demand of you.<br>No, now tell me.<br>Shhh.<br>I'm sorry.<br>Is this making you uncomfortable?<br>Is my anger making you uncomfortable?<br>Is your complacency making you uncomfortable?<br>No? Are you sure? Explain to me,<br>From your throne of ignorance, then,<br>while stabbing blindly into an abyss,<br>convincing yourself that this is right,<br>that humanity has a price<br>You tell me then,<br>Is that the truth?<br>That a severed baby's head in a desert<br>is worth a two-dollar tea, that a meal<br>delivered to you in 2 minutes, greasy<br>with blood that you lick of your fingers,<br>add hashbrowns to that, too. No, I implore you,<br>you who claims that this is not your duty,<br>not your area of expertise, that you are a mere bystander,<br>you who has arms and a feet and a brain and a questionable<br>excuse for a heart,<br>tell me, then, that humanity has a price tag,<br>Is this the truth?<br>Is this your truth?"
+        ]
+      },
+      {
+        title: "hot american sun",
+        author: "Fathima",
+        paragraphs: [
+          "Unbeknownst to me, I often thread my desires between my teeth, let my hopes and dreams filter slowly into a sieve. I am a stranger to my own body I gut myself softly with my index finger, let myself bleed out. I pass by windows, and wince upon seeing my reflection glaring back at me underneath this American sun. Glimmering with hope, underneath the facade they sneer -- the stars too, constrained by the sky, held captive to the moon. The moon himself looks down at me with fury, moonlight often paints itself across my twisted body, imprinted within the grass in your backyard. Whispers of last summer flit across your arms, your torso, your legs, those marks on your neck, those bruises, gaping wounds I let simmer.",
+          "I often bite my own hand, to see if it hurts as much. Yet I always know, it never does. Lies taste like honey on my lips, that word love snakes itself into my throat, buried 6 feet under I see the war torn land of my home. Crumbling buildings, dying children, mothers raped, fathers jailed. I am all but imprisoned to my own thoughts, to my own memories, to even think of being with you feels like a betrayal to the young girl who used to dream back then. Am I allowed to love when my people die, Am I allowed to even feel when my people cry?",
+          "Behind my lids I see red, in the crevices of my palms I bleed, my organs ache for sustenance, mouth yearns for yours. I manipulate my existence with nothing but my thoughts, force my heart to remain still, force my lungs to stop greedily drinking in this oxygen I do not deserve. What have I done besides meagerly shout, meagerly cry? I cannot even be with my people as they tremble to the ground, as the Earth drinks their blood and bakes their souls. I watch from afar, a spectator to the madness held captive within the T.V.",
+          "Americans is a curse to their tongues, the same word is home to me. I am a traitor to the very same womb that cultivated me from nothing, a traitor to be the one that falls in love with you. This land, its people. I sink my chipping teeth into my wrist, let myself vow to never again look at this land with anything other than contempt. Yet I continue to burn with lust silently underneath this hot American Sun."
         ]
       },
       {
@@ -630,6 +753,44 @@ const bookBody = document.getElementById('bookBody');
 
 const chipRefs = [];
 
+function makeBookFloat(book, section, bi){
+  const float = document.createElement('div');
+  float.className = 'book-float';
+  float.style.setProperty('--delay', (bi * 0.5) + 's');
+  float.style.setProperty('--reveal-delay', (bi * 0.12) + 's');
+
+  const card = document.createElement('button');
+  card.className = 'book';
+  card.setAttribute('aria-label', 'Open ' + book.title);
+
+  const callno = document.createElement('span');
+  callno.className = 'callno lower';
+  callno.textContent = 'no. ' + String(bi + 1).padStart(2, '0');
+  card.appendChild(callno);
+
+  const bottom = document.createElement('div');
+  bottom.style.display = 'flex';
+  bottom.style.justifyContent = 'space-between';
+  bottom.style.alignItems = 'flex-end';
+  bottom.style.gap = '8px';
+
+  const title = document.createElement('span');
+  title.className = 'title lower';
+  title.textContent = book.title;
+
+  const arrow = document.createElement('span');
+  arrow.className = 'arrow';
+  arrow.innerHTML = '&#8594;';
+
+  bottom.appendChild(title);
+  bottom.appendChild(arrow);
+  card.appendChild(bottom);
+
+  card.addEventListener('click', () => openBook(book, section.shelf));
+  float.appendChild(card);
+  return float;
+}
+
 library.forEach((section, si) => {
   const sectionId = 'shelf-' + si;
 
@@ -661,63 +822,33 @@ library.forEach((section, si) => {
   const shelf = document.createElement('div');
   shelf.className = 'shelf';
 
-  section.books.forEach((book, bi) => {
-    const float = document.createElement('div');
-    float.className = 'book-float';
-    float.style.setProperty('--delay', (bi * 0.5) + 's');
-    float.style.setProperty('--reveal-delay', (bi * 0.12) + 's');
+  const track = document.createElement('div');
+  track.className = 'shelf-track';
+  // odd shelves drift the opposite direction, just for variety
+  track.style.setProperty('--dir', si % 2 === 0 ? 'normal' : 'reverse');
 
-    const card = document.createElement('button');
-    card.className = 'book';
-    card.setAttribute('aria-label', 'Open ' + book.title);
+  // render the row twice back-to-back so a 50%-width translateX loops seamlessly
+  for (let copy = 0; copy < 2; copy++){
+    section.books.forEach((book, bi) => {
+      track.appendChild(makeBookFloat(book, section, bi));
+    });
+  }
+  shelf.appendChild(track);
 
-    const callno = document.createElement('span');
-    callno.className = 'callno lower';
-    callno.textContent = 'no. ' + String(si * 10 + bi + 1).padStart(2, '0');
-    card.appendChild(callno);
-
-    const bottom = document.createElement('div');
-    bottom.style.display = 'flex';
-    bottom.style.justifyContent = 'space-between';
-    bottom.style.alignItems = 'flex-end';
-    bottom.style.gap = '8px';
-
-    const title = document.createElement('span');
-    title.className = 'title lower';
-    title.textContent = book.title;
-
-    const arrow = document.createElement('span');
-    arrow.className = 'arrow';
-    arrow.innerHTML = '&#8594;';
-
-    bottom.appendChild(title);
-    bottom.appendChild(arrow);
-    card.appendChild(bottom);
-
-    card.addEventListener('click', () => openBook(book, section.shelf));
-    float.appendChild(card);
-    shelf.appendChild(float);
-  });
+  // pause the drift on touch devices while someone's trying to tap a book
+  shelf.addEventListener('touchstart', () => track.classList.add('paused'), { passive: true });
+  shelf.addEventListener('touchend', () => setTimeout(() => track.classList.remove('paused'), 400));
 
   shelfWrap.appendChild(shelf);
   wrap.appendChild(shelfWrap);
   shelvesEl.appendChild(wrap);
 
-  let isDown = false, startX = 0, startScroll = 0;
-  shelf.addEventListener('pointerdown', e => {
-    if (e.pointerType !== 'mouse') return;
-    isDown = true;
-    shelf.classList.add('dragging');
-    startX = e.clientX;
-    startScroll = shelf.scrollLeft;
-  });
-  window.addEventListener('pointermove', e => {
-    if (!isDown) return;
-    shelf.scrollLeft = startScroll - (e.clientX - startX);
-  });
-  window.addEventListener('pointerup', () => {
-    isDown = false;
-    shelf.classList.remove('dragging');
+  // set the loop duration from the actual rendered width so speed stays
+  // consistent (~36px/s) no matter how many books are on the shelf
+  requestAnimationFrame(() => {
+    const fullWidth = track.scrollWidth / 2;
+    const duration = Math.max(18, fullWidth / 36);
+    track.style.setProperty('--duration', duration + 's');
   });
 });
 
@@ -733,6 +864,78 @@ function closeBook(){ overlay.classList.remove('open'); }
 document.getElementById('closeBtn').addEventListener('click', closeBook);
 overlay.addEventListener('click', e => { if (e.target === overlay) closeBook(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBook(); });
+
+// generate the skyline once: a hazy far layer for depth, and a nearer
+// layer with lit windows and a few hung neon signs
+(function buildSkyline(){
+  const skyline = document.getElementById('skyline');
+  const skylineFar = document.getElementById('skylineFar');
+  const w = window.innerWidth;
+
+  // far, hazier layer — taller, sparser, no windows, just silhouette
+  let fx = -40;
+  const farCount = Math.max(6, Math.ceil(w / 220));
+  for (let i = 0; i < farCount; i++){
+    const bw = 140 + Math.random() * 220;
+    const bh = 160 + Math.random() * 280;
+    const b = document.createElement('div');
+    b.className = 'building far';
+    b.style.left = fx + 'px';
+    b.style.width = bw + 'px';
+    b.style.height = bh + 'px';
+    skylineFar.appendChild(b);
+    fx += bw + 30 + Math.random() * 60;
+  }
+
+  const signColors = ['magenta', 'red', 'green'];
+  const count = Math.max(10, Math.ceil(w / 90));
+  let x = -20;
+  for (let i = 0; i < count; i++){
+    const bw = 60 + Math.random() * 70;
+    const bh = 80 + Math.random() * 220;
+    const b = document.createElement('div');
+    b.className = 'building';
+    b.style.left = x + 'px';
+    b.style.width = bw + 'px';
+    b.style.height = bh + 'px';
+    skyline.appendChild(b);
+
+    const cols = Math.max(2, Math.floor(bw / 16));
+    const rows = Math.max(3, Math.floor(bh / 22));
+    for (let c = 0; c < cols; c++){
+      for (let r = 0; r < rows; r++){
+        if (Math.random() > 0.55) continue;
+        const win = document.createElement('div');
+        win.className = 'window' + (Math.random() > 0.85 ? ' cyan' : '') + (Math.random() > 0.55 ? ' flicker' : '');
+        win.style.left = (x + 10 + c * 15) + 'px';
+        win.style.bottom = (10 + r * 20) + 'px';
+        win.style.animationDelay = (Math.random() * 6) + 's';
+        skyline.appendChild(win);
+      }
+    }
+
+    // roughly one in five buildings gets a hung neon sign
+    if (Math.random() > 0.8 && bh > 110){
+      const sign = document.createElement('div');
+      const color = signColors[Math.floor(Math.random() * signColors.length)];
+      const vertical = Math.random() > 0.5;
+      sign.className = 'sign ' + color;
+      if (vertical){
+        sign.style.width = '5px';
+        sign.style.height = (30 + Math.random() * 40) + 'px';
+      } else {
+        sign.style.width = (24 + Math.random() * 34) + 'px';
+        sign.style.height = '5px';
+      }
+      sign.style.left = (x + bw * 0.3 + Math.random() * bw * 0.4) + 'px';
+      sign.style.bottom = (bh * 0.3 + Math.random() * bh * 0.4) + 'px';
+      sign.style.animationDelay = (Math.random() * 6) + 's';
+      skyline.appendChild(sign);
+    }
+
+    x += bw + 6 + Math.random() * 14;
+  }
+})();
 
 // reveal shelf sections + scrollspy nav highlighting
 const io = new IntersectionObserver(entries => {
@@ -757,6 +960,16 @@ function onScroll(){
 }
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
+
+// occasional, brief glitch flicker on the headline — signal instability
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (!reduceMotion){
+  const titleEl = document.getElementById('mainTitle');
+  setInterval(() => {
+    titleEl.classList.add('glitching');
+    setTimeout(() => titleEl.classList.remove('glitching'), 240);
+  }, 7000 + Math.random() * 5000);
+}
 
 // one-time typewriter reveal of the headline
 const fullTitle = "reading room";
