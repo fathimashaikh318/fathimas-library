@@ -435,42 +435,25 @@
   }
   @media (prefers-reduced-motion: reduce){ .shelf-platform{ animation: none; } }
 
-  /* the shelf viewport is fixed-width and clips; shelf-drag holds a
-     manual offset the user can grab and drag; shelf-track (inside it)
-     is doubled in JS and drifts sideways in its own seamless loop —
-     the two transforms stack, so a manual drag doesn't fight the auto-scroll */
+  /* the shelf scrolls horizontally under the user's own control —
+     drag with a mouse, or swipe on touch; nothing moves on its own */
   .shelf{
     position: relative;
     z-index: 1;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     padding: 10px 4px 26px;
     cursor: grab;
-    touch-action: pan-y;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
+  .shelf::-webkit-scrollbar{ display: none; }
   .shelf.dragging{ cursor: grabbing; }
-  .shelf-drag{ display: block; will-change: transform; }
   .shelf-track{
     display: flex;
     align-items: flex-end;
     gap: 20px;
     width: max-content;
-    animation-name: marquee;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-duration: var(--duration, 50s);
-    animation-direction: var(--dir, normal);
-  }
-  .shelf:hover .shelf-track,
-  .shelf-track.paused{
-    animation-play-state: paused;
-  }
-  @keyframes marquee{
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .shelf-track{ animation: none; }
-    .shelf{ overflow-x: auto; }
   }
 
   .book-float{
@@ -966,55 +949,38 @@ library.forEach((section, si) => {
 
   const track = document.createElement('div');
   track.className = 'shelf-track';
-  // odd shelves drift the opposite direction, just for variety
-  track.style.setProperty('--dir', si % 2 === 0 ? 'normal' : 'reverse');
 
-  // render the row twice back-to-back so a 50%-width translateX loops seamlessly
-  for (let copy = 0; copy < 2; copy++){
-    section.books.forEach((book, bi) => {
-      track.appendChild(makeBookFloat(book, section, bi));
-    });
-  }
+  section.books.forEach((book, bi) => {
+    track.appendChild(makeBookFloat(book, section, bi));
+  });
+  shelf.appendChild(track);
 
-  // shelfDrag carries a manual offset (from dragging); shelf-track keeps
-  // auto-looping inside it — the two transforms stack, so grabbing a
-  // shelf and pulling it just shifts where the auto-scroll continues from
-  const shelfDrag = document.createElement('div');
-  shelfDrag.className = 'shelf-drag';
-  shelfDrag.appendChild(track);
-  shelf.appendChild(shelfDrag);
-
-  let dragOffset = 0;
-  let dragging = false, dragStartX = 0, dragStartOffset = 0, moved = false, justDragged = false;
-
+  // click-and-drag scrolling for mouse users; touch just scrolls natively
+  let isDown = false, startX = 0, startScroll = 0, moved = false, justDragged = false;
   shelf.addEventListener('pointerdown', e => {
-    if (e.pointerType === 'mouse' && e.button !== 0) return;
-    dragging = true;
+    if (e.pointerType !== 'mouse') return;
+    isDown = true;
     moved = false;
-    dragStartX = e.clientX;
-    dragStartOffset = dragOffset;
-    track.classList.add('paused');
+    startX = e.clientX;
+    startScroll = shelf.scrollLeft;
     shelf.classList.add('dragging');
   });
   window.addEventListener('pointermove', e => {
-    if (!dragging) return;
-    const delta = e.clientX - dragStartX;
+    if (!isDown) return;
+    const delta = e.clientX - startX;
     if (Math.abs(delta) > 4) moved = true;
-    dragOffset = dragStartOffset + delta;
-    shelfDrag.style.transform = `translateX(${dragOffset}px)`;
+    shelf.scrollLeft = startScroll - delta;
   });
   function endDrag(){
-    if (!dragging) return;
-    dragging = false;
+    if (!isDown) return;
+    isDown = false;
     justDragged = moved;
     shelf.classList.remove('dragging');
-    track.classList.remove('paused');
   }
   window.addEventListener('pointerup', endDrag);
   window.addEventListener('pointercancel', endDrag);
 
-  // if the pointer interaction was actually a drag, swallow the click so
-  // it doesn't also open whichever book happened to be under the cursor
+  // if that was actually a drag, don't also let the click open a book
   shelf.addEventListener('click', e => {
     if (justDragged) { e.stopPropagation(); e.preventDefault(); justDragged = false; }
   }, true);
@@ -1022,14 +988,6 @@ library.forEach((section, si) => {
   shelfWrap.appendChild(shelf);
   wrap.appendChild(shelfWrap);
   shelvesEl.appendChild(wrap);
-
-  // set the loop duration from the actual rendered width so speed stays
-  // consistent (~36px/s) no matter how many books are on the shelf
-  requestAnimationFrame(() => {
-    const fullWidth = track.scrollWidth / 2;
-    const duration = Math.max(18, fullWidth / 36);
-    track.style.setProperty('--duration', duration + 's');
-  });
 });
 
 function openBook(book, shelfName){
@@ -1045,7 +1003,7 @@ overlay.addEventListener('click', e => { if (e.target === overlay) closeBook(); 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBook(); });
 
 // generate the skyline once: a hazy far layer for depth, and a nearer
-// layer with lit windows and a few hung neon signs
+// layer with lit windows and two Chicago-flavored landmark towers
 (function buildSkyline(){
   const skyline = document.getElementById('skyline');
   const skylineFar = document.getElementById('skylineFar');
@@ -1070,22 +1028,57 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBook();
   }
 
   const count = Math.max(10, Math.ceil(w / 90));
-  const landmarkIndex = Math.floor(count / 2);
+  const willisIndex = Math.floor(count / 2);
+  const hancockIndex = Math.floor(count * 0.22);
   let x = -20;
   for (let i = 0; i < count; i++){
-    const isLandmark = i === landmarkIndex;
-    const bw = isLandmark ? 92 : 60 + Math.random() * 70;
-    const bh = isLandmark
+    const isWillis = i === willisIndex;
+    const isHancock = i === hancockIndex;
+    const bw = isWillis ? 92 : isHancock ? 72 : 60 + Math.random() * 70;
+    const bh = isWillis
       ? Math.min(440 + Math.random() * 70, nearMaxH)
+      : isHancock
+      ? Math.min(400 + Math.random() * 40, nearMaxH)
       : Math.min(140 + Math.random() * 300, nearMaxH);
     const b = document.createElement('div');
     b.className = 'building';
     b.style.left = x + 'px';
     b.style.width = bw + 'px';
     b.style.height = bh + 'px';
+
+    if (isHancock){
+      // a nod to the John Hancock Center's tapered, cross-braced profile
+      b.style.clipPath = 'polygon(18% 0%, 82% 0%, 100% 100%, 0% 100%)';
+      b.style.background = 'linear-gradient(180deg, #26282b 0%, #131417 100%)';
+    }
     skyline.appendChild(b);
 
-    if (isLandmark){
+    if (isHancock){
+      const braceColor = 'rgba(230,230,225,0.45)';
+      const brace1 = document.createElement('div');
+      brace1.style.position = 'absolute';
+      brace1.style.left = (x + bw * 0.22) + 'px';
+      brace1.style.bottom = '0px';
+      brace1.style.width = (bw * 0.62) + 'px';
+      brace1.style.height = '2px';
+      brace1.style.background = braceColor;
+      brace1.style.transformOrigin = 'left bottom';
+      brace1.style.transform = `rotate(${-Math.atan2(bh, bw * 0.4) * (180 / Math.PI)}deg)`;
+      skyline.appendChild(brace1);
+
+      const brace2 = document.createElement('div');
+      brace2.style.position = 'absolute';
+      brace2.style.left = (x + bw * 0.16) + 'px';
+      brace2.style.bottom = bh + 'px';
+      brace2.style.width = (bw * 0.62) + 'px';
+      brace2.style.height = '2px';
+      brace2.style.background = braceColor;
+      brace2.style.transformOrigin = 'left top';
+      brace2.style.transform = `rotate(${Math.atan2(bh, bw * 0.4) * (180 / Math.PI)}deg)`;
+      skyline.appendChild(brace2);
+    }
+
+    if (isWillis){
       // a nod to the twin antennas on the Willis Tower
       [bw * 0.3, bw * 0.7].forEach(offset => {
         const spike = document.createElement('div');
@@ -1096,17 +1089,19 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBook();
       });
     }
 
-    const cols = Math.max(2, Math.floor(bw / 16));
-    const rows = Math.max(3, Math.floor(bh / 22));
-    for (let c = 0; c < cols; c++){
-      for (let r = 0; r < rows; r++){
-        if (Math.random() > 0.55) continue;
-        const win = document.createElement('div');
-        win.className = 'window' + (Math.random() > 0.85 ? ' cyan' : '') + (Math.random() > 0.55 ? ' flicker' : '');
-        win.style.left = (x + 10 + c * 15) + 'px';
-        win.style.bottom = (10 + r * 20) + 'px';
-        win.style.animationDelay = (Math.random() * 6) + 's';
-        skyline.appendChild(win);
+    if (!isHancock){
+      const cols = Math.max(2, Math.floor(bw / 16));
+      const rows = Math.max(3, Math.floor(bh / 22));
+      for (let c = 0; c < cols; c++){
+        for (let r = 0; r < rows; r++){
+          if (Math.random() > 0.55) continue;
+          const win = document.createElement('div');
+          win.className = 'window' + (Math.random() > 0.85 ? ' cyan' : '') + (Math.random() > 0.55 ? ' flicker' : '');
+          win.style.left = (x + 10 + c * 15) + 'px';
+          win.style.bottom = (10 + r * 20) + 'px';
+          win.style.animationDelay = (Math.random() * 6) + 's';
+          skyline.appendChild(win);
+        }
       }
     }
 
@@ -1203,8 +1198,6 @@ function carSVG(kind, color){
     }
   });
 })();
-
-
 
 // reveal shelf sections + scrollspy nav highlighting
 const io = new IntersectionObserver(entries => {
