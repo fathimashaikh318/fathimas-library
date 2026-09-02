@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>reading room</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&family=Big+Shoulders+Text:wght@400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&family=Big+Shoulders+Text:wght@400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
     --void: #0b0c0a;
@@ -648,6 +648,46 @@
     opacity: 0.4;
   }
 
+  /* screenplay formatting, used only on pieces marked format: "script" */
+  .body-text.script{
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+  .body-text.script .sluglike{
+    display: block;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    margin: 1.6em 0 0.7em;
+  }
+  .body-text.script .sluglike:first-child{ margin-top: 0; }
+  .body-text.script .action{
+    display: block;
+    margin: 0 0 1em;
+  }
+  .body-text.script .character{
+    display: block;
+    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 1.4em 0 0.2em;
+  }
+  .body-text.script .paren{
+    display: block;
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.92em;
+    margin: 0.3em auto 0.1em;
+    max-width: 46%;
+  }
+  .body-text.script .dialogue{
+    display: block;
+    max-width: 68%;
+    margin: 0.15em auto 0.4em;
+    text-align: left;
+  }
+
   footer{
     text-align: center;
     color: var(--bone-soft);
@@ -850,10 +890,10 @@ const library = [
     ]
   },
   {
-    shelf: "essays",
+    shelf: "experimental",
     books: [
       {
-        title: "my blue jacket",
+        title: "my blue jacket [memoir]",
         author: "Fathima",
         paragraphs: [
           "I had worn a blue jacket whose dye had faded after years of running underneath thrashing thunderstorms -- my arms strained with the weight of holding books, backpacks, grocery bags and other objects that had at the moment been in my proximity, failing to protect myself from the oncoming rain. At times, the jacket's obstinate weight, multiplied with the water, had bothered me and set me in a fit as I got to peeling it off my body, aching to rid my bones from the chill. There was a lining of matted sheep's wool coating the inside of the jacket that had kept me wrapped in comfort for a couple of snowstorms until the grimy water had gotten to flattening the stuff. Regardless, the jacket had a good few runs, had been the object of many compliments during its prime -- buttons now grimy, coppery, metal had gleamed against the denim. My father had given me this jacket, wordlessly, after he caught me eyeing his own, no matter that I am his daughter and the jacket is fit for a man. We share the same taste, the same refusal to comply to some arbitrary standard, and when asked about the whereabouts of my jacket, I'd say with pride, my father had given it to me. It had been his own.",
@@ -862,12 +902,91 @@ const library = [
           "Still, I yearned to be connected to him, to know who this man was and in what way his blood unfurled in my veins, beyond our facial structure and bitten nails, in the unseen. Was it the brain that never turned off, thought after thought being churned out, bitter and unkempt? Wearing the clothes he wore enabled me to reach this higher level of intimacy that I craved, even if I hated the way the sheep fur matted and clung, the deep onset blue of that jacket.",
           "So yes, despite my growing contempt of this jacket, I would never be caught on a chilly day without it, even as the continuous wear has caused a little bit of shedding here and there and the threads have begun to pull out. My father himself never sees me wear it, how could he? He is across the country after all, and never in my life have we FaceTime'd oh so casually. Still, I think of my stubborn refusal to shed this jacket like old skin as a testimony to the likeliness between us, and in the depth of night, when I find my mind wandering to all that I will never know about him, the jacket brings me great comfort."
         ]
+      },
+      {
+        title: "Bakery [script]",
+        author: "Fathima",
+        format: "script",
+        paragraphs: [
+          "<span class=\"sluglike\">FADE IN:</span><span class=\"sluglike\">INT. BAKERY - MORNING</span>",
+          "<span class=\"action\">CHICAGO, IL. A small, bustling bakery. The smell of fresh pastries fills the air. A LINE of CUSTOMERS waits impatiently. Behind the counter, a frazzled BAKER (30s) scrambles to keep up.</span>",
+          "<span class=\"action\">At the front, a heated argument brews between a WOMAN (20s) and a MAN (30s, employee, sharp-tongued, impatient). Behind the counter, a HEAVYSET BAKER'S ASSISTANT (\"FATTY\") plates danishes, looking uncomfortable.</span>",
+          "<span class=\"character\">WOMAN</span><span class=\"paren\">(angry, voice rising)</span><span class=\"dialogue\">But I told you, I am NOT fucking crazy!</span>",
+          "<span class=\"character\">MAN</span><span class=\"paren\">(exasperated, turning to pastry display)</span><span class=\"dialogue\">I didn't ask if you were fucking crazy.</span><span class=\"paren\">(to assistant)</span><span class=\"dialogue\">Four croissants for the gentleman over there, please. Can we hurry it up bringing out the new batch?! I asked for this three minutes ago.</span><span class=\"paren\">(yells to back)</span><span class=\"dialogue\">What is taking so long back there? Are you bringing them or eating them, Fatty?</span>",
+          "<span class=\"character\">FATTY</span><span class=\"paren\">(behind cart, plating danishes, mutters)</span><span class=\"dialogue\">I'm sorry, working as fast as I can…</span>",
+          "<span class=\"character\">WOMAN</span><span class=\"paren\">(furious, snapping at Man)</span><span class=\"dialogue\">Don't call him that, dickface!</span><span class=\"paren\">(looks at Assistant, softens voice)</span><span class=\"dialogue\">You are NOT fat. Don't listen to him.</span><span class=\"paren\">(looks back at Man)</span><span class=\"dialogue\">He is NOT fat! Tell him that!</span>",
+          "<span class=\"character\">FATTY</span><span class=\"paren\">(blushes, looks down shyly)</span><span class=\"dialogue\">Oh no, it's ok, you don't have to.</span>",
+          "<span class=\"character\">MAN</span><span class=\"paren\">(frustrated, under breath)</span><span class=\"dialogue\">Lord help me. Forget it.</span><span class=\"paren\">(to Assistant)</span><span class=\"dialogue\">You are not fat.</span><span class=\"paren\">(to Woman)</span><span class=\"dialogue\">There, you happy?</span><span class=\"paren\">(peppy smile, turns to OLD LADY at counter)</span><span class=\"dialogue\">Good morning, ma'am! What can I get for you today?</span>",
+          "<span class=\"character\">WOMAN</span><span class=\"paren\">(sarcastic, cutting in)</span><span class=\"dialogue\">You dumb piece of shit! I am not done with this conversation.</span><span class=\"paren\">(softens, turns to Old Lady)</span><span class=\"dialogue\">I'm so sorry, could we have a moment—</span>",
+          "<span class=\"character\">MAN</span><span class=\"paren\">(cutting her off)</span><span class=\"dialogue\">No! We are not having a moment here, at my place of work!</span><span class=\"paren\">(back to Old Lady, forcing a smile)</span><span class=\"dialogue\">So sorry about that. Now, let me tell you about today's seasonals. We've got this to-die-for apple danish that's just been—</span>",
+          "<span class=\"character\">WOMAN</span><span class=\"paren\">(mocking, loud to Man)</span><span class=\"dialogue\">Oh, they are not to die for. And they're a day old.</span><span class=\"paren\">(lowers voice to Old Lady)</span><span class=\"dialogue\">They are not to die for. I had to pretend to like them so he wouldn't go whining about me not \"respecting\" his work all day. Can you believe that? Isn't that just crazy?</span>",
+          "<span class=\"character\">MAN</span><span class=\"paren\">(rubbing temples, eyes closed, then snapping open)</span><span class=\"dialogue\">You know what, ma'am? I'm so sorry to involve you in this, but how about you settle this for us?</span><span class=\"paren\">(gesturing wildly)</span><span class=\"dialogue\">Me, a hard-working man, at his place of work, trying to make a living. Or her—</span><span class=\"paren\">(points to Woman)</span><span class=\"dialogue\">Some psycho chick standing here, yelling at me, causing a nuisance.</span><span class=\"paren\">(expectantly staring at Old Lady, who gulps)</span>",
+          "<span class=\"character\">WOMAN</span><span class=\"paren\">(mocking laugh, mutters)</span><span class=\"dialogue\">Oh no fucking way—</span>",
+          "<span class=\"character\">FATTY</span><span class=\"paren\">(softly, uncomfortable)</span><span class=\"dialogue\">Um… guys… the line is just getting longer, you know...</span>",
+          "<span class=\"character\">MAN</span><span class=\"paren\">(snaps out of it, turns irritated to Assistant)</span><span class=\"dialogue\">Oh, yes, I know, piggy!</span><span class=\"paren\">(turns back to Old Lady, still sharp)</span><span class=\"dialogue\">Listen, if you're just gonna stand there, might as well leave. We've got a whole line wrapping out the door.</span>",
+          "<span class=\"action\">The Old Lady stands in shock, her lip quivering. Suddenly, TEARS well in her eyes. She turns and hobbles out, her CANE tapping loudly against the floor.</span>",
+          "<span class=\"action\">Silence. The bakery patrons watch in stunned silence. The Woman glares at the Man, seething. The Assistant looks down, ashamed.</span>",
+          "<span class=\"character\">MAN NEXT IN LINE</span><span class=\"paren\">(chuckles)</span><span class=\"dialogue\">Well, I think I know what her answer to your question would be.</span>",
+          "<span class=\"sluglike\">FADE TO BLACK.</span>"
+        ]
+      },
+      {
+        title: "Then I ask him, But Pa have you ever killed a man before [monologue]",
+        author: "Fathima",
+        paragraphs: [
+          "Then I ask him, But Pa have you ever killed a man before? And he opens his eyes from the couch finally, not a word but a response nonetheless, actually, no, no - a conversation in and of itself, and he looks at me, slowly, head-turning, melting into his fat neck, and he looks at me. I mean really looks at me, can you even believe that? Twelve years I've gone by invisible, and BAM! a singular question…ah, well, I'm getting off track, ain't I? Sorry. Yes, we do have a gun on our coffee table, a packet of open cigarettes, a TV that screams jingles and advertisements, yes, my first sip of beer was when I was nine years old, on my Pa's lap. Really? You mean to tell me that I can't drink until I'm 21? What the hell typa rule is that? My first time behind the wheel? Oh, uh, let me think. Oh sorry, is my finger tapping annoying ya? Ma used to say it was annoying, used to tell me she'd bite 'em right off if I did it again. Clearly, she didn't, empty threats, but maybe it's 'cause she went overboard on the heroin before she got the chance to. Haha! Anyways, my first time driving I was also nine. Probably that same day that I tried Pa's beer to tell ya the truth! Yes, drinking and driving is illegal, that I'm aware of, but what can ya do down here in Alabama? It's not like us folks read down here, am I right! …. Wow, y'all cops sure hard to please. Not even a smile? Ok..yes Pa did used to work before he broke his back, fell off the ladder from the seventh floor. Ain't that just crazy?! We lived off disability and social security before I realized that there still were never groceries in the damn trailer. But oh ya, the liquor. That trailer had liquor for days! That's when I realized I gotta go out and make me my own money, gotta feed myself like a hardworking man 'ought to do. And I did do that, you damn betcha I did, mowing lawns and scrubbing toilets at twelve years old instead of in the classroom readin and learnin my times tables. No, sir, I am not tryna stall, would never treat a bunch of respectable cops like y'all in such a shady manner! But back to your original question, yes. Yes, Pa had killed a man -- a boy -- before. Shot him right in the heart. Who? Oh. My twin brother.",
+          "Luke woke up at 14, had been trying to get his life together since then. It was a sorry sorry sight to see, a boy with the whole damn world against him still tryna keep that smile on his face, those yellow teeth visible any moment of the day. He really was a sweetheart, really was, but it's just…I don't know. I really don't. It's just sometimes the world births good people in terrible, terrible places and I just feel like…it's inevitable you know? Someone's gotta end up in these places and who better? It's the uh… hm…Oh I remember! The Pigeonhole Principle. It's the Pigeonhole Principle. Bet a bunch of cops like y'all wouldn't expect someone like me to know what that means. Well, I read. I read quite a bit actually. What is The Pigeonhole Principle? What, do you guys not believe me when I say I know what it means? Can a lady not be educated? Oh…y'all don't know what it means? They don't teach y'all math up there at the Po 'Cademy? Well, I s'pose I could explain it real quick. See, it's real simple. If you got more things than places to put 'em, something's gotta share space. Ain't no way around it. You got three kids but only two beds? Someone's sleeping on the floor. Ten folks at a dinner table but only nine plates? Someone's going hungry. A world full of unlucky bastards but only so many places for them to land? Well, someone's getting stuck in a place like this. Luke was that someone. Ain't his fault, ain't nobody's fault really, it's just math."
+        ]
       }
     ]
   },
   {
     shelf: "poetry",
     books: [
+      {
+        title: "solitude",
+        author: "Fathima",
+        paragraphs: [
+          "i. I say I don't believe in God<br>Except on those days where I am aware of my<br>Isolation,<br>Where the sun's setting is the only<br>Preoccupation on my mind.<br>And I say I don't care but really<br>I watch the ocean when I close my eyes<br>Think of the salt burning my open wounds,<br>Wonder what the Indian place on the side of<br>The building would taste like<br>If there was ecstasy sprinkled in the<br>Day old chai",
+          "Still I only drink black coffee<br>with a shit ton of sugar<br>saccharine crystals scraping my<br>taste buds<br>and I only care for the people<br>in my immediate vicinity<br>I've learned to let go of memories,<br>I go to the bookstore alone,<br>I read in the corner and think about my<br>mom and when i was 11<br>and I remember caffe latte's with cream<br>(no sugar)<br>and how I will never be 11 again,<br>my mother never around the corner,<br>scolding and reprimanding a song<br>to my ear",
+          "In the morning I<br>try to not be spurred by<br>anxiety<br>my organs a whirring motor<br>driven only by the desire to constantly<br>be in motion<br>I try to forget what the sunrise looks like<br>so I am forced to be reborn when I open<br>my eyes<br>try to forget what skinny arms and bitten<br>apples feel like under the sun,<br>what sunscreen tastes like when<br>it blends with water<br>I forget what innocence feels like<br>to know you are always right<br>underneath God's eyes<br>to know you are encompassed in<br>nothing but fall leaves crunching<br>underneath your boots, apple cider and soft<br>December snow with green tea and books",
+          "But I understood from a young age,<br>time slips in my palms and this was my curse,<br>tears and adolescence and reminiscence<br>and sweethearts, understanding<br>the fragility of every connection<br>my eyes make from",
+          "Plantain chips and sugar-free<br>Peach snapples, sweaty laundromats<br>and scalding New Jersey summers,<br>the cockroach that crawled across my arm<br>when I slept, yet I screamed,<br>my grandpa on the bed and my tears<br>on his clothes,<br>trying to hug him without breaking<br>frail bones<br>how I will never see love like that again, haven't been back<br>since I was 13",
+          "scraped knees and don't-touch-the-ground,<br>swinging from monkey bar to trampoline,<br>indoor rock walls and calloused palms.<br>Hospital disinfectant and math by the window,<br>cousins I barely talk to anymore but<br>stalk online,<br>rubber band bracelets and missing teeth,<br>water sprinklers and Mexican Cola.",
+          "In February I am alone,<br>and I am aware of this solitude that<br>is my existence,<br>aware of everything I've lost and how<br>I mourn none of it, brothers buried<br>6 feet under in my eyes<br>but still roaming the Earth somehow,<br>I wonder if they miss me, wonder if they<br>think of me as a bitch wonder<br>if they understand,<br>my childhood a<br>roll behind bleary eyes, morning filters between<br>the rest of the darkness and yet I mourn none of it<br>none of it and I am at ease, alone in this corner,<br>the tap water and the trekking to and from and<br>the toxic morning runs<br>still<br>I am alone but never more peaceful."
+        ]
+      },
+      {
+        title: "hypocritical",
+        author: "Fathima",
+        paragraphs: [
+          "I could love you a different time,<br>when I take sugar in my tea,<br>but not today<br>today I spent my day meandering<br>amongst<br>crumbling brick<br>buildings,<br>wondering when history<br>becomes chic,<br>when cobblestone roads<br>dictate an aesthetic and. i eat a cookie<br>whole<br>forget to split, don't think i know how anways.<br>half the time i think my brain wonders<br>about the past, mourning the future,<br>i avoid the present through the lives<br>of others, let the summer sun<br>stay with me instead,<br>wear a sundress only cause it's light,<br>avoid my face in the mirror. half the time<br>i think i avoid beauty because it comes from<br>me, my thoughts, my bleeding fingers,<br>holding a knife,<br>carving into flesh that never gives. oh mother,<br>i stab into my stomach, and<br>i expect ichor to flow<br>but i am not disgusted instead by the<br>dried gum and thick breath<br>of decaying dreams wafting off<br>the sidewalk, spilling out of<br>me instead. i try to be good<br>but ever since i was a little girl i knew i<br>couldnt be, couldnt feel for the blackbird<br>with broken wings stumbling<br>outside and i recognize that isolation<br>is the unwanted prison<br>i am bound to, that here i am unreachable<br>beyond the lingering torment of my sins<br>depleting me of everything ive tried to be<br>and i scream from behind the bars<br>and still<br>nothing ever comes out.",
+          "---",
+          "I am unable to get past my existence and<br>I mourn the tragedy of it all<br>Mourn my tongue unable to wrap<br>around words it knows<br>it must say, mourn my inability<br>to move when the sky begins to bleed<br>and I fear it is the yearning between the<br>crevices of my palm,<br>dirtying the whites of my dress too,<br>my sin evil and blaring.<br>Wearing pearl earrings,<br>I am a hypocrite<br>unconsumed and treasured underneath<br>yet my skin is tarnished with<br>the broken blunt of the axe<br>I'd kept hidden underneath the crumbling<br>coffin of everything that has died between<br>my lips. There is a soul which can be crafted<br>from the alternate words spat,<br>instead, through<br>each cruel sentence, the yellowed<br>calcium from the toll of life,<br>the pockets of fatigue<br>cradling my eyes like the crib<br>of a newborn. And when the sun rises<br>yet again I come unto the soil,<br>moist from the morning dew, cracked<br>where grass cannot grow,<br>I wonder about the orange peels<br>that have been left on my windowsill,<br>the remaining pulp withering as I sit<br>here, the spiders stemming from<br>the wooden bench leave their red<br>welts on my already stained skin.<br>So I welcome the warmth,<br>the venom that comes<br>from fooling my corruption.",
+          "---",
+          "You forget that I was born<br>From chiffon headscarf<br>Pastels and femininity<br>Hidden underneath the<br>Rhinestones.<br>Abayas, draped across hangers,<br>The overbearing<br>leaves of a willow tree,<br>The sanctity from the sun<br>Offering protection<br>and privacy.<br>still underneath<br>false pretenses,<br>I am jailed, encased in make-believe<br>bamboo,<br>the aquatic scent<br>drowns me in their dreams.",
+          "still, perseverance comes to me<br>in the form of seclusion,<br>the knowing glimpse underneath<br>the cloth that I am reduced to nothing<br>but the words that I formulate,<br>my brain an evanescent jewel,<br>knowing that when I walk the street<br>I am everything, all consuming, the sidewalk<br>molding concrete,<br>to make room for me and yet I<br>appear as a ghost to those ignorant eyes.<br>still when I speak my words froth<br>at their ears and satiate their curiosity,<br>forever yearning for more.",
+          "this is my sanctuary --<br>underneath the breath of this<br>cloth, underneath my undisguisable<br>existence made present<br>through my intellect,<br>adorned in gold,<br>encased in an armor,<br>shielded<br>from unwavering glares<br>and here, the daffodils bloom<br>like forbidden secrets,<br>my fingers the only flesh<br>they allow themselves to be<br>plucked by, and I<br>watch them bloom.",
+          "I am born knowing<br>I am sacred to the<br>unassuming eye,<br>knowing that<br>tomorrow tomorrow<br>and tomorrow my inevitable<br>being will continue to anger<br>those blind to my beauty,<br>knowing that the fragrance is<br>their only taunting reminder<br>of everything I am to be. Still,<br>their tongues twist with<br>vehemence and I wonder,<br>with an afterthought,<br>again just what my crime may be."
+        ]
+      },
+      {
+        title: "deaths cousin",
+        author: "Fathima",
+        paragraphs: [
+          "Sleep dawns upon me<br>like the cousin of Death<br>and I let it. I wonder -<br>if through marmalade<br>slices of bread and drunken<br>glasses of wine - we can meet<br>again.",
+          "Summer was a blur, my dear.<br>Drug store condoms, cheap<br>motrin in the little cardboard<br>boxes. The bee stings. Always<br>the bee stings. Sensational,<br>flaring hot pain. I have missed<br>the sun spreading it's honey<br>onto my burned skin. I forget<br>I am not meat waiting to be<br>cooked.",
+          "I'd like to think you found me.<br>Or I found you. Either way,<br>we met. Desperation laced with<br>the weed your brother sold. We<br>were lonely, you understand.<br>Lonely people do idiotic things.<br>We kissed, that story has been told.<br>The sun and the moon kissed and the<br>world exploded, we all lived<br>happily ever after, the end.<br>Old news. But what about what<br>happened before or what happened<br>after the happily-ever-after. You don't<br>want to hear it, but not every story<br>has one of those. Ours didn't.",
+          "Sleep seduces me with slurred songs<br>and thick kisses. I try to avoid it, not<br>ready to see you again. You<br>were pathetic. A facade of broken promises,<br>pores that leaked with golden<br>lies, marijuana,<br>your perfume, your sanctuary.",
+          "Summer was a blur, but<br>winter was worse.<br>It's talons dug into my scalp<br>and it reminded me of the way<br>you drank. Ruthless and unforgiving.<br>Children do not learn from their<br>elders mistakes and so I fear for<br>yours. Once upon a time,<br>yes, perhaps that yours would've<br>been ours. I fear for ours. But<br>our once upon a time has passed<br>and it's someone else's turn now.",
+          "You make a girl forget<br>what love means when you<br>stick that cigarette between your<br>lips. Your lips, I miss the way they<br>drank mine. I missed the way your<br>cigarettes burned my mouth. I still<br>have a scar and I trace it when I miss you,<br>I trace it every second.",
+          "You are a broken, foolish boy.<br>Fate is tragic and so were we.<br>You found me, or I found you.<br>Either way, we both ended up,<br>intertwined, that autumn day on the<br>concrete floor of the abandoned asylum.<br>I go there sometimes, and see the shape<br>of our writhing bodies imprinted<br>within the dust from last fall.",
+          "I wish I had let the bitter<br>contempt rise in my throat when<br>we locked coffee shaded eyes in the party<br>that summer evening. Drugs, drinking,<br>and smoking were never my type.<br>You were never my type. You twisted my<br>mind like the weed and coke did to yours.<br>You messed me up.",
+          "Unfortunately, when you died, I kept<br>living. It's a curse, the ones left behind.<br>I am burdened by the smell of alcohol<br>and the fuzzy feeling you gave me<br>when we melted into each other<br>that day on the roof. We thought<br>no one could see us and they<br>pretended they couldn't. I<br>carry the emptiness you once<br>filled in my heart and I carry<br>your battered pieces in my<br>soul.",
+          "Somewhere, underneath my organs<br>and inside my pupils, sleep<br>dawns upon me like the cousin of<br>death.",
+          "I let it because I hope to finally<br>see you again."
+        ]
+      },
       {
         title: "Chicago",
         author: "Fathima",
@@ -876,14 +995,6 @@ const library = [
           "And when I went to school,<br>Pastor preaches in the church,<br>stained glass shattered,<br>I never wanted to leave,<br>because here<br>and he takes a breath, the sobs racking his body,<br>doesn't say it but here is hell,<br>and there you are in the coffin, and you are forever<br>young and eager to know, the only damn<br>purity in this,<br>and I am still alive, flesh and all,<br>I am still wearing your backpack because<br>this is what you wanted,<br>and then everyone tries to leave<br>and the congregation goes<br>Amen,<br>and my face is wet and your mom is giving me a tissue but<br>I am reading your notes from English and<br>how you know the difference between a haiku and<br>a sonnet.",
           "I hope it doesn't smell like<br>cigarettes wherever you are,<br>and you remember what it feels like to love someone<br>who is unfiltered poetry,<br>purity in the way you understand<br>you can never obtain because you were<br>stained the moment you<br>entered this world,<br>confined to the sorry<br>home where the door was always<br>locked,<br>where the grass was nurtured off violence.<br>I hope that you remember me and<br>the swings I broke my arm on when we were 5,<br>the peel you kept<br>from the orange I gave you<br>when we were 7,<br>but then you accidentally threw away<br>when we were 13 and I called you a loser for getting a<br>C in math.",
           "You would've made it for us,<br>He would've made it for us,<br>That's what we always say, but<br>deep down I know no one believes it,<br>no one knows who can make what<br>and whoever does make it<br>wouldn't come back, this home<br>is what we are born into<br>and what we become,<br>chained to the remnants of whatever we<br>Dreamt of when we were kids,<br>Crayon nubs and melted wax in the crevices of my palm,<br>the 4th of July and burnt meat over the smoke<br>that we devour with the other kids<br>because somehow they also know<br>that we will never escape."
-        ]
-      },
-      {
-        title: "what do you think about when it is night time",
-        author: "Fathima",
-        paragraphs: [
-          "What do you think about when it is nighttime, and you are alone and shivering? You are feverish and alone. The fan is on, normally the whirring helps you sleep. Even though you are cold and even though the caffeine you consumed just a couple hours before is whirring through your veins, heart beat beat beat beat beat at a pace that gets you nervous, you keep that fan on. Tonight, you lay awake and stare at the ceiling, your favorite form of torture, watching the rotation, start calculating the RPM of whirring blades in your mind, give up halfway and think about the time you were 8 and scraped your knee during recess instead. You had cried and your knee had bled. You never liked blood. Watched it trickle down your shin, you limped, perhaps with a flair of unnecessary dramatism, to the corner of the basketball court, wished you were anywhere but there, at elementary school, at recess, grappling for a ball with a bunch of other kids. You miss your mom. You always miss your mom. The other kids whisper from the middle of the court, looking between you and the boy who had pushed you and the teacher far off in the field, who is on her phone and perhaps calling her husband. The kids wonder how to deal with such a precarious situation, a little bit of blood, a crying 8-year-old boy they found abnormal - though their internal detestment of him was not due to anything in particular. I mean, for God's Sake, they were 8 too, how could they pinpoint what they liked or didn't like about a person, who they chose to worship and who they chose to take the blows of the somehow hierarchical structure that 3rd grade brought? Blasphemy, really. Of course, you don't think this when you're 8, but when you're 19 instead, lying in your bed alone and unable to sleep. Back on the basketball court, the decision has been made by the huddle. We will let the crying boy cry, we will continue on with our game, balls fumbling, shrill laughter. Girls continue playing hopscotch. You accept this decision with a tinge of relief, open your lunchbox your mom packed for you, and even at 8, you feel an overpowering love and adoration for this action, for the vision of your mother up at 6 am, slicing tomatoes with precision, toasting bread and laying out the ingredients, cutting a banana in half because she knows you won't eat the whole thing -- she will take the other half for herself instead. That will be her breakfast that she eats after she drops you off at school, she will eat it on her drive back, when she is alone in the car and calling her own mother, across the country.",
-          "The children continue playing. You take a bite of your sandwich, your blood has dried and your tears have stopped. This is your reality as an 8-year-old, you hurt and you forget. At 19, you find it much different."
         ]
       },
       {
@@ -901,6 +1012,19 @@ const library = [
           "I often bite my own hand, to see if it hurts as much. Yet I always know, it never does. Lies taste like honey on my lips, that word love snakes itself into my throat, buried 6 feet under I see the war torn land of my home. Crumbling buildings, dying children, mothers raped, fathers jailed. I am all but imprisoned to my own thoughts, to my own memories, to even think of being with you feels like a betrayal to the young girl who used to dream back then. Am I allowed to love when my people die, Am I allowed to even feel when my people cry?",
           "Behind my lids I see red, in the crevices of my palms I bleed, my organs ache for sustenance, mouth yearns for yours. I manipulate my existence with nothing but my thoughts, force my heart to remain still, force my lungs to stop greedily drinking in this oxygen I do not deserve. What have I done besides meagerly shout, meagerly cry? I cannot even be with my people as they tremble to the ground, as the Earth drinks their blood and bakes their souls. I watch from afar, a spectator to the madness held captive within the T.V.",
           "Americans is a curse to their tongues, the same word is home to me. I am a traitor to the very same womb that cultivated me from nothing, a traitor to be the one that falls in love with you. This land, its people. I sink my chipping teeth into my wrist, let myself vow to never again look at this land with anything other than contempt. Yet I continue to burn with lust silently underneath this hot American Sun."
+        ]
+      }
+    ]
+  },
+  {
+    shelf: "prose",
+    books: [
+      {
+        title: "what do you think about when it is night time",
+        author: "Fathima",
+        paragraphs: [
+          "What do you think about when it is nighttime, and you are alone and shivering? You are feverish and alone. The fan is on, normally the whirring helps you sleep. Even though you are cold and even though the caffeine you consumed just a couple hours before is whirring through your veins, heart beat beat beat beat beat at a pace that gets you nervous, you keep that fan on. Tonight, you lay awake and stare at the ceiling, your favorite form of torture, watching the rotation, start calculating the RPM of whirring blades in your mind, give up halfway and think about the time you were 8 and scraped your knee during recess instead. You had cried and your knee had bled. You never liked blood. Watched it trickle down your shin, you limped, perhaps with a flair of unnecessary dramatism, to the corner of the basketball court, wished you were anywhere but there, at elementary school, at recess, grappling for a ball with a bunch of other kids. You miss your mom. You always miss your mom. The other kids whisper from the middle of the court, looking between you and the boy who had pushed you and the teacher far off in the field, who is on her phone and perhaps calling her husband. The kids wonder how to deal with such a precarious situation, a little bit of blood, a crying 8-year-old boy they found abnormal - though their internal detestment of him was not due to anything in particular. I mean, for God's Sake, they were 8 too, how could they pinpoint what they liked or didn't like about a person, who they chose to worship and who they chose to take the blows of the somehow hierarchical structure that 3rd grade brought? Blasphemy, really. Of course, you don't think this when you're 8, but when you're 19 instead, lying in your bed alone and unable to sleep. Back on the basketball court, the decision has been made by the huddle. We will let the crying boy cry, we will continue on with our game, balls fumbling, shrill laughter. Girls continue playing hopscotch. You accept this decision with a tinge of relief, open your lunchbox your mom packed for you, and even at 8, you feel an overpowering love and adoration for this action, for the vision of your mother up at 6 am, slicing tomatoes with precision, toasting bread and laying out the ingredients, cutting a banana in half because she knows you won't eat the whole thing -- she will take the other half for herself instead. That will be her breakfast that she eats after she drops you off at school, she will eat it on her drive back, when she is alone in the car and calling her own mother, across the country.",
+          "The children continue playing. You take a bite of your sandwich, your blood has dried and your tears have stopped. This is your reality as an 8-year-old, you hurt and you forget. At 19, you find it much different."
         ]
       },
       {
@@ -1047,6 +1171,7 @@ function openBook(book, shelfName){
   bookTag.textContent = shelfName;
   bookTitle.textContent = book.title;
   bookBody.innerHTML = book.paragraphs.map(p => p === '---' ? '<hr class="scene-break">' : `<p>${p}</p>`).join('');
+  bookBody.classList.toggle('script', book.format === 'script');
   overlay.classList.add('open');
   pageEl.scrollTop = 0;
 }
